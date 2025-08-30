@@ -1,2 +1,0 @@
-(()=>{"use strict";console.log("test")})();
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibWFpbi42YzBhOGFkYmY2ZTA4NTNkYTc0YS5qcyIsIm1hcHBpbmdzIjoibUJBQ0lBLFFBQVFDLElBQUksTyIsInNvdXJjZXMiOlsid2VicGFjazovL3Byb2R1Y3Rpb24tcHJvamVjdC8uL3NyYy90ZXN0LnRzIl0sInNvdXJjZXNDb250ZW50IjpbImV4cG9ydCBmdW5jdGlvbiBzb21lRm4obnVtYmVyKSB7XHJcbiAgICBjb25zb2xlLmxvZygndGVzdCcpO1xyXG59XHJcbiJdLCJuYW1lcyI6WyJjb25zb2xlIiwibG9nIl0sInNvdXJjZVJvb3QiOiIifQ==
