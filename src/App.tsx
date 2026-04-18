@@ -5,6 +5,7 @@ import { useTheme } from './theme/useTheme';
 import { classNames } from './helpers/classNames/classNames';
 import { MainPageAsync } from './pages/MainPage/MainPage.async';
 import { AboutPageAsync } from './pages/AboutPage/AboutPage.async';
+import './styles/index.scss';
 
 const App = () => {
     const {theme, toggleTheme} = useTheme();

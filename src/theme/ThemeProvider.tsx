@@ -11,9 +11,6 @@ const ThemeProvider: FC = ({children}) => {
         setTheme: setTheme,
     }), [theme]);
 
-    const toggleTheme = () => {
-        setTheme(theme === Theme.LIGHT ? Theme.DARK : Theme.LIGHT);
-    }
     return (
         <ThemeContext.Provider value={defaultProps}>
             {children}
