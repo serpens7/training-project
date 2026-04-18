@@ -1,8 +1,7 @@
 import {render } from 'react-dom';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
-import { Theme } from 'theme/ThemeContext';
-import ThemeProvider from 'theme/ThemeProvider';
+import ThemeProvider from './theme/ThemeProvider';
 
 render( 
     <BrowserRouter>
