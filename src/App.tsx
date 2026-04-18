@@ -8,7 +8,8 @@ import { AboutPageAsync } from './pages/AboutPage/AboutPage.async';
 import './styles/index.scss';
 
 const App = () => {
-    const {theme, toggleTheme} = useTheme();
+    const { theme, toggleTheme } = useTheme();
+    const bool = true;
 
     return (
         <div className={classNames('app', {}, [theme])}>

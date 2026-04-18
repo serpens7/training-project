@@ -7,13 +7,12 @@
     "noImplicitAny": true,
     "module": "ESNext",
     // В какую спецификацию компилируем: для поддержки большинства браузеров
-    "target": "es5",
+    "target": "es6",
     "jsx": "react-jsx",
     // Компилятор будет обрабатывать не только TS файлы, но и JS файлы
     "allowJs": true,
-    "moduleResolution": "node",
+    // "ignoreDeprecations": "6.0",
     // Для абсолютного импорта
-    "baseUrl": ".",
     "paths": {
       "*": ["./src/*"]
     },
