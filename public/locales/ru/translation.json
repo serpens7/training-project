@@ -1,11 +1,19 @@
 {
-    "about": {
-        "title": "О нас"
-    },
-    "main": {
-        "page": "Главная"
-    },
-    "lang": {
-        "switcher": "English"
-    }
+  "about": {
+    "title": "О нас"
+  },
+  "main": {
+    "page": "Главная"
+  },
+  "lang": {
+    "switcher": "English"
+  },
+  "notFound": {
+    "title": "Страница не найдена"
+  },
+  "error": {
+    "occured": "Произошла непредвиденная ошибка",
+    "reload": "Обновить страницу",
+    "throw-button": "Показать ошибку"
+  }
 }

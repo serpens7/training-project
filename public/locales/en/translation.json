@@ -7,5 +7,13 @@
   },
   "lang": {
     "switcher": "Русский"
+  },
+  "notFound": {
+    "title": "Page not found"
+  },
+  "error": {
+    "occured": "An unexpected error occured",
+    "reload": "Reload page",
+    "throw-button": "Throw Error"
   }
 }
