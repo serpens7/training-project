@@ -29,6 +29,14 @@ export default {
         '<rootDir>src/**/*(*.)@(spec|test).[tj]s?(x)',
     ],
     rootDir: '../../',
+    globals: {
+        'ts-jest': {
+            isolatedModules: true,
+        },
+    },
+    transformIgnorePatterns: [
+        'node_modules/',
+    ],
 
 
     // Indicates whether the coverage information should be collected while executing the test
