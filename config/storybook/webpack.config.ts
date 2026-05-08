@@ -1,11 +1,10 @@
-/* eslint-disable no-param-reassign */
 import webpack, { RuleSetRule } from 'webpack';
 import { BuildPaths } from '../build/types/config';
 import { buildCssLoader } from '../build/loaders/buildCssLoader';
+import path from 'path';
 
 
 export default ({ config }: { config: webpack.Configuration }) => {
-    const path = require('path');
     const paths: BuildPaths = {
         build: '',
         html: '',
