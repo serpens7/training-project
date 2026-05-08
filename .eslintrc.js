@@ -45,6 +45,7 @@ module.exports = {
         'i18next/no-literal-string': 'off',
         'max-len': 'off',
         'storybook/no-renderer-packages': 'off',
+        'no-missing-end-of-source-newline': 'off',
     },
     globals: {
         __IS_DEV__: true,
