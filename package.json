@@ -14,7 +14,10 @@
         "lint:scss:fix": "npx stylelint \"**/*.scss\" --fix",
         "unit": "jest --config ./config/jest/jest.config.ts",
         "storybook": "start-storybook -p 6006 -c config/storybook",
-        "build-storybook": "storybook build"
+        "build-storybook": "storybook build",
+        "test": "unit",
+        "storybook:build": "storybook build",
+        "test:ui:ci": "jest --config ./config/jest/jest.config.ts --ci"
     },
     "keywords": [],
     "author": "",
