@@ -6,9 +6,11 @@
 export default {
     clearMocks: true,
     testEnvironment: 'jsdom',
+    rootDir: '../../',
 
     transform: {
-        '^.+\\.(ts|tsx)$': 'ts-jest',
+        '^.+\\.(ts|tsx)$': '@swc/jest',
+        '^.+\\.svg$': '<rootDir>/config/jest/svgMock.js',
     },
 
     coveragePathIgnorePatterns: [
@@ -28,7 +30,6 @@ export default {
     testMatch: [
         '<rootDir>src/**/*(*.)@(spec|test).[tj]s?(x)',
     ],
-    rootDir: '../../',
     globals: {
         'ts-jest': {
             isolatedModules: true,
@@ -37,7 +38,13 @@ export default {
     transformIgnorePatterns: [
         'node_modules/',
     ],
-
+    setupFilesAfterEnv: [
+        '<rootDir>config/jest/jestSetup.ts',
+    ],
+    moduleNameMapper: {
+        '^@/(.*)$': '<rootDir>/src/$1',
+        '\\.(css|scss)$': 'identity-obj-proxy',
+    },
 
     // Indicates whether the coverage information should be collected while executing the test
     // collectCoverage: false,

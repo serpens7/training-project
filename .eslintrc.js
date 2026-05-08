@@ -10,6 +10,7 @@ module.exports = {
         'airbnb',
         'plugin:i18next/recommended',
         'prettier',
+        'plugin:storybook/recommended',
     ],
     parser: '@typescript-eslint/parser',
     parserOptions: {
@@ -43,6 +44,7 @@ module.exports = {
         'no-underscore-dangle': 'off',
         'i18next/no-literal-string': 'off',
         'max-len': 'off',
+        'storybook/no-renderer-packages': 'off',
     },
     globals: {
         __IS_DEV__: true,

@@ -1,8 +1,7 @@
 {
     "compilerOptions": {
         "outDir": "./dist/",
-        "types": ["jest"],
-        // Подсвечивает все места где не указан тип
+        "types": ["jest"], // Подсвечивает все места где не указан тип
         // Однако это не означает, что теперь вовсе нельзя использовать any.
         // Это означает лишь, что в подобных ситуация разработчик должен явно писать any,
         "noImplicitAny": true,
@@ -18,6 +17,7 @@
             "@/*": ["./src/*"]
         },
         "moduleResolution": "node",
+        "skipLibCheck": true,
         // esModuleInterop позволяет работать с пакетами, которые используют
         // common js как с обычными пакета с помощью import (require() module.export) = common js
         // import Moment from 'moment';
@@ -36,7 +36,9 @@
     },
     "ts-node": {
         "compilerOptions": {
-            "module": "CommonJS"
+            "module": "CommonJS",
+            "skipLibCheck": true,
+            "types": ["node"]
         }
     }
 }
