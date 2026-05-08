@@ -3,7 +3,7 @@ import { BuildPaths } from '../build/types/config';
 import { buildCssLoader } from '../build/loaders/buildCssLoader';
 import path from 'path';
 
-
+/* eslint-disable no-param-reassign */
 export default ({ config }: { config: webpack.Configuration }) => {
     const paths: BuildPaths = {
         build: '',
