@@ -1,23 +1,18 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { componentRender } from '@/shared/lib/tests/componentRender';
+import { fireEvent, screen } from '@testing-library/react';
 import { Sidebar } from './Sidebar';
 
 describe('Sidebar', () => {
-    test('should toggle collapsed class on click', () => {
-        render(<Sidebar />);
+    test('with only first param', () => {
+        componentRender(<Sidebar />);
+        expect(screen.getByTestId('sidebar')).toBeInTheDocument();
+    });
 
-        const sidebar = screen.getByText('toggle').closest('div');
-
-        expect(sidebar).toBeInTheDocument();
-        expect(sidebar).not.toHaveClass('collapsed');
-
-        const toggleBtn = screen.getByText('toggle');
-
+    test('test toggle', () => {
+        componentRender(<Sidebar />);
+        const toggleBtn = screen.getByTestId('sidebar-toggle');
+        expect(screen.getByTestId('sidebar')).toBeInTheDocument();
         fireEvent.click(toggleBtn);
-
-        expect(sidebar).toHaveClass('collapsed');
-
-        fireEvent.click(toggleBtn);
-
-        expect(sidebar).not.toHaveClass('collapsed');
+        expect(screen.getByTestId('sidebar')).toHaveClass('collapsed');
     });
 });

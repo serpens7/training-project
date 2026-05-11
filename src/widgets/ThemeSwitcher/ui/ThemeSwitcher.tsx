@@ -1,4 +1,4 @@
-import { classNames } from '@/shared/lib/classNames';
+import { classNames } from '@/shared/lib/classNames/classNames';
 import cls from './ThemeSwitcher.module.scss';
 import { Button, ButtonTheme } from '@/shared/Button/Button';
 import LightIcon from '@/shared/assets/icons/theme-light.svg';
