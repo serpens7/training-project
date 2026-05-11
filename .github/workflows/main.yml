@@ -27,18 +27,19 @@ jobs:
 
             - name: Type checking
               run: npm run type:check
-
+              if: always()
             - name: Lint TS
               run: npm run lint:ts
-
+              if: always()
             - name: Lint SCSS
               run: npm run lint:scss
-
+              if: always()
             - name: Unit tests
               run: npm run unit
-
+              if: always()
             - name: Build production
               run: npm run build:prod
-
+              if: always()
             - name: Build Storybook
               run: npm run build-storybook
+              if: always()
