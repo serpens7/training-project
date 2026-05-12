@@ -33,19 +33,7 @@ jobs:
               if: always()
             - name: Lint SCSS
               run: npm run lint:scss
-<<<<<<< HEAD
-<<<<<<< HEAD
-            - name: unit testing
-              run: npm run test:unit
-            - name: build storybook
-              run: npm run storybook:build
-            - name: screenshot testing
-              run: npm run test:ui:ci
-=======
-
-=======
               if: always()
->>>>>>> 441390d (yml and lint changes)
             - name: Unit tests
               run: npm run unit
               if: always()
@@ -54,8 +42,4 @@ jobs:
               if: always()
             - name: Build Storybook
               run: npm run build-storybook
-<<<<<<< HEAD
->>>>>>> 7b47288 (yml fix 2)
-=======
               if: always()
->>>>>>> 441390d (yml and lint changes)
