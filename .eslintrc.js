@@ -32,7 +32,6 @@ module.exports = {
         'import/no-unresolved': 'off',
         'import/order': 'off',
         'import/prefer-default-export': 'off',
-        'no-unused-vars': 'warn',
         'react/require-default-props': 'off',
         'react/react-in-jsx-scope': 'off',
         'react/destructuring-assignment': 'off',
@@ -52,6 +51,7 @@ module.exports = {
         'no-param-reassign': 'off',
         'arrow-body-style': 'off',
         'np-param-reassign': 'off',
+        '@typescript-eslint/no-unused-vars': 'warn',
     },
     globals: {
         __IS_DEV__: true,
