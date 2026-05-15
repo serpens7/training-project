@@ -13,7 +13,7 @@ export interface ThemeContextProps {
 
 export const ThemeContext = createContext<ThemeContextProps>({
     theme: Theme.LIGHT,
-    setTheme: () => {},
+    setTheme: () => undefined,
 });
 
 export const LOCAL_STORAGE_THEME_KEY = 'theme';
