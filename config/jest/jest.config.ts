@@ -31,6 +31,7 @@ export default {
         '<rootDir>src/**/*(*.)@(spec|test).[tj]s?(x)',
     ],
     globals: {
+        '__IS_DEV__': true,
         'ts-jest': {
             isolatedModules: true,
         },
