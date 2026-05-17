@@ -1,3 +1,4 @@
+import { UserSchema } from "@/entities/User";
 
 export interface CounterSchema {
     value: number;
@@ -5,4 +6,5 @@ export interface CounterSchema {
 
 export interface StateSchema {
     counter: CounterSchema;
+    user: UserSchema;
 }
