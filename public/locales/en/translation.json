@@ -15,5 +15,11 @@
     "occured": "An unexpected error occured",
     "reload": "Reload page",
     "throw-button": "Throw Error"
+  },
+  "login": {
+    "error": "Invalid username or password"
+  },
+  "navbar": {
+    "exit": "Exit"
   }
 }
