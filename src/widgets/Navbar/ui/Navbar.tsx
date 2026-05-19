@@ -34,25 +34,22 @@ export const Navbar = ({ className = '' }: NavbarProps) => {
     if (authData) {
         return (
             <div className={classNames(cls.Navbar, {}, [className])}>
-                <Text text={` ${authData.username}`} />
-                <Button
-                    theme={ButtonTheme.CLEAR_INVERTED}
-                    className={cls.links}
-                    onClick={onLogout}
-                >
-                    {t('navbar.exit')}
-                </Button>
+                <div className={cls.innerNavbar}>
+                    <Text text={` ${authData.username}`} />
+                    <Button
+                        theme={ButtonTheme.CLEAR_INVERTED}
+                        onClick={onLogout}
+                    >
+                        {t('navbar.exit')}
+                    </Button>
+                </div>
             </div>
         );
     }
 
     return (
         <div className={classNames(cls.Navbar, {}, [className])}>
-            <Button
-                theme={ButtonTheme.CLEAR_INVERTED}
-                className={cls.links}
-                onClick={onShowModal}
-            >
+            <Button theme={ButtonTheme.CLEAR_INVERTED} onClick={onShowModal}>
                 {t('Войти')}
             </Button>
             <LoginModal isOpen={isAuthModal} onClose={onCloseModal} />
