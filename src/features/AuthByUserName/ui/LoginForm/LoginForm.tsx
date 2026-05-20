@@ -15,7 +15,7 @@ import {
 import {
     DynamicModuleLoader,
     ReducersList,
-} from '@/shared/lib/DynamicModuleLoader';
+} from '@/app/providers/config/DynamicModuleLoader';
 import { loginByUsername } from '../../model/services/loginByUsername';
 import { classNames } from '@/shared/lib/classNames/classNames';
 
