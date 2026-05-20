@@ -5,10 +5,11 @@ import { userReducer } from '@/entities/User';
 import { createReducerManager } from './reducerManager';
 import { Reducer, AnyAction } from 'redux';
 
-export function createReduxStore(initialState?: StateSchema) {
+export function createReduxStore(initialState?: StateSchema, asyncReducers?: ReducersMapObject<StateSchema>) {
     const rootReducers: ReducersMapObject<StateSchema> = {
+        ...asyncReducers,
         counter: counterReducer,
-        user: userReducer
+        user: userReducer,
     };
 
     const reducerManager = createReducerManager(rootReducers);
