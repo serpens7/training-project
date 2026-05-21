@@ -21,5 +21,8 @@
   },
   "navbar": {
     "exit": "Exit"
+  },
+  "profile": {
+    "page": "Profile"
   }
 }

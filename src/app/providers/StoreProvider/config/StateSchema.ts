@@ -1,3 +1,4 @@
+import { ProfileSchema } from "@/entities/Profile";
 import { UserSchema } from "@/entities/User";
 import { LoginSchema } from "@/features/AuthByUserName";
 import { AnyAction, EnhancedStore, Reducer, ReducersMapObject } from "@reduxjs/toolkit";
@@ -9,6 +10,7 @@ export interface CounterSchema {
 export interface StateSchema {
     counter: CounterSchema;
     user: UserSchema;
+    profile?: ProfileSchema;
     loginForm?: LoginSchema;
 }
 
