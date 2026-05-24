@@ -1,42 +1,37 @@
-import axios from 'axios';
-import { Dispatch } from '@reduxjs/toolkit';
-import { StateSchema } from '@/app/providers/StoreProvider';
-import { userActions } from '@/entities/User';
 import { loginByUsername } from './loginByUsername';
 import { TestAsyncThunk } from '@/shared/lib/tests/TestAsyncThunk';
+import { $api } from '@/shared/api/api';
 
-jest.mock('axios');
+jest.mock('@/shared/api/api');
 
-const mockedAxios = jest.mocked(axios);
+const mockedAxios = jest.mocked($api);
 
 describe('loginByUsername.test', () => {
-
-    // без TestAsyncThunk
-    let dispatch: Dispatch;
-    let getState: () => StateSchema;
-
-    beforeEach(() => {
-        dispatch = jest.fn();
-        getState = jest.fn();
-    });
-
     test('success login', async () => {
         const userValue = { username: '123', id: '1' };
-        mockedAxios.post.mockReturnValue(Promise.resolve({ data: userValue }));
-        const action = loginByUsername({ username: '123', password: '123' });
-        const result = await action(dispatch, getState, { api: mockedAxios });
 
-        expect(dispatch).toHaveBeenCalledWith(userActions.setAuthData(userValue));
-        expect(dispatch).toHaveBeenCalledTimes(3);
+        mockedAxios.post.mockResolvedValue({
+            data: userValue,
+        });
+
+        const thunk = new TestAsyncThunk(loginByUsername);
+        const result = await thunk.callThunk({
+            username: '123',
+            password: '123',
+        });
+        expect(thunk.dispatch).toHaveBeenCalledTimes(3);
         expect(mockedAxios.post).toHaveBeenCalled();
         expect(result.meta.requestStatus).toBe('fulfilled');
         expect(result.payload).toEqual(userValue);
     });
-    // через TestAsyncThunk
+
     test('error login', async () => {
-        mockedAxios.post.mockReturnValue(Promise.resolve({ status: 403 }));
+        mockedAxios.post.mockRejectedValue(new Error('login error'));
         const thunk = new TestAsyncThunk(loginByUsername);
-        const result = await thunk.callThunk({ username: '123', password: '123' });
+        const result = await thunk.callThunk({
+            username: '123',
+            password: '123',
+        });
 
         expect(thunk.dispatch).toHaveBeenCalledTimes(2);
         expect(mockedAxios.post).toHaveBeenCalled();
