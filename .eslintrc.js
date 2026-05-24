@@ -52,6 +52,7 @@ module.exports = {
         'arrow-body-style': 'off',
         'np-param-reassign': 'off',
         '@typescript-eslint/no-unused-vars': 'warn',
+        'no-undef': 'off',
     },
     globals: {
         __IS_DEV__: true,

@@ -23,6 +23,12 @@
     "exit": "Exit"
   },
   "profile": {
-    "page": "Profile"
+    "page": "Profile",
+    "profile": {
+      "profile": "Profile",
+      "edit": "Edit",
+      "firstName": "Firstname",
+      "lastName": "Lastname"
+    }
   }
 }

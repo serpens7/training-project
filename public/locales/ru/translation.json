@@ -23,6 +23,12 @@
     "exit": "Выйти"
   },
   "profile": {
-    "page": "Профиль"
+    "page": "Профиль",
+    "profile": {
+      "profile": "Профиль",
+      "edit": "Редактировать",
+      "firstName": "Имя",
+      "lastName": "Фамилия"
+    }
   }
 }
