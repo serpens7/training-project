@@ -14,7 +14,8 @@
   "error": {
     "occured": "An unexpected error occured",
     "reload": "Reload page",
-    "throw-button": "Throw Error"
+    "throw-button": "Throw Error",
+    "server": "Server error occured"
   },
   "login": {
     "error": "Invalid username or password"
@@ -28,7 +29,15 @@
       "profile": "Profile",
       "edit": "Edit",
       "firstName": "Firstname",
-      "lastName": "Lastname"
+      "lastName": "Lastname",
+      "error": "Error occured",
+      "refreshPage": "Try refreshing the page",
+      "title": "Profile"
+    },
+    "button": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "edit": "Edit"
     }
   }
 }
