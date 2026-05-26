@@ -18,7 +18,11 @@
     "server": "Server error occured"
   },
   "login": {
-    "error": "Invalid username or password"
+    "error": "Invalid username or password",
+    "authorization": "Authorization form",
+    "username": "Enter your login",
+    "password": "Enter your password",
+    "submit": "Login"
   },
   "navbar": {
     "exit": "Exit"
@@ -32,12 +36,24 @@
       "lastName": "Lastname",
       "error": "Error occured",
       "refreshPage": "Try refreshing the page",
-      "title": "Profile"
+      "title": "Profile",
+      "name": "Your name",
+      "lastname": "Your lastname",
+      "age": "Your age",
+      "city": "Your city",
+      "username": "Your login",
+      "avatar": "Your avatar"
     },
     "button": {
       "save": "Save",
       "cancel": "Cancel",
       "edit": "Edit"
     }
+  },
+  "currency": {
+    "select": "Choose currency"
+  },
+  "country": {
+    "select": "Choose country"
   }
 }
