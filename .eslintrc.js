@@ -53,6 +53,7 @@ module.exports = {
         'np-param-reassign': 'off',
         '@typescript-eslint/no-unused-vars': 'warn',
         'no-undef': 'off',
+        'react/jsx-no-undef': 'error',
     },
     globals: {
         __IS_DEV__: true,

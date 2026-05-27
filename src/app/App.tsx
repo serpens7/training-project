@@ -8,7 +8,7 @@ import { useTheme } from './providers/ThemeProvider';
 import { userActions } from '@/entities/User/model/slice/userSlice';
 import { useDispatch } from 'react-redux';
 
-const App = () => {
+function App() {
     const { theme } = useTheme();
     const dispatch = useDispatch();
 
@@ -27,6 +27,6 @@ const App = () => {
             </Suspense>
         </div>
     );
-};
+}
 
 export default App;

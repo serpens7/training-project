@@ -66,7 +66,7 @@ const LoginForm = memo(({ onSuccess }: LoginFormProps) => {
                 className={classNames(cls.LoginForm, {}, [])}
                 onSubmit={onSubmit}
             >
-                <Text title={t('Форма авторизации')} />
+                <Text title={t('login.authorization')} />
                 {error && (
                     <Text theme={TextTheme.ERROR} text={t('login.error')} />
                 )}
@@ -74,7 +74,7 @@ const LoginForm = memo(({ onSuccess }: LoginFormProps) => {
                     autofocus
                     type='text'
                     className={cls.input}
-                    placeholder={t('Введите username')}
+                    placeholder={t('login.username')}
                     onChange={onChangeUsername}
                     value={username}
                 />
@@ -82,7 +82,7 @@ const LoginForm = memo(({ onSuccess }: LoginFormProps) => {
                 <Input
                     type='password'
                     className={cls.input}
-                    placeholder={t('Введите пароль')}
+                    placeholder={t('login.password')}
                     onChange={onChangePassword}
                     value={password}
                 />
@@ -91,7 +91,7 @@ const LoginForm = memo(({ onSuccess }: LoginFormProps) => {
                     type='submit'
                     disabled={isLoading}
                 >
-                    {t('Войти')}
+                    {t('login.submit')}
                 </Button>
             </form>
         </DynamicModuleLoader>
