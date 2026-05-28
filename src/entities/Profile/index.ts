@@ -1,6 +1,6 @@
 export type {
     Profile,
-    ProfileSchema,
+    ProfileSchema
 } from './model/types/profile';
 
 export {
