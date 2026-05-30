@@ -11,7 +11,7 @@ export enum AppRoutes {
     PROFILE = 'profile',
 }
 
-type AppRouteProps = RouteProps & {
+export type AppRouteProps = RouteProps & {
     authOnly?: boolean;
 };
 
