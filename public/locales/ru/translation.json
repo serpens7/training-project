@@ -3,7 +3,7 @@
     "title": "О нас"
   },
   "main": {
-    "page": "Главная"
+    "title": "Главная"
   },
   "lang": {
     "switcher": "English"
@@ -19,7 +19,8 @@
     "incorrectCountry": "Недопустимая страна",
     "incorrectAge": "Недопустимый возраст",
     "noData": "Недопустимые данные",
-    "incorrectUserData": "Имя и фамилия обязательны"
+    "incorrectUserData": "Имя и фамилия обязательны",
+    "articleNotFound": "Статья не найдена"
   },
   "login": {
     "error": "Вы ввели неверный логин или пароль",
@@ -38,7 +39,6 @@
   },
   "profile": {
     "title": "Профиль",
-    "page": "Профиль",
     "profile": "Профиль",
     "edit": "Редактировать",
     "firstName": "Имя",
@@ -58,9 +58,9 @@
   "country": {
     "select": "Укажите страну"
   },
+  "article": {
+    "title": "Статьи"
+  },
   "article-details": {
-    "error": {
-      "articleNotFound": "Статья не найдена"
-    }
   }
 }

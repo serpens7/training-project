@@ -3,7 +3,7 @@
     "title": "About us"
   },
   "main": {
-    "page": "Home"
+    "title": "Home"
   },
   "lang": {
     "switcher": "Русский"
@@ -19,7 +19,8 @@
     "incorrectCountry": "Invalid country",
     "incorrectAge": "Invalid age",
     "noData": "Invalid data",
-    "incorrectUserData": "First and last name are required"
+    "incorrectUserData": "First and last name are required",
+    "articleNotFound": "Article not found"
   },
   "login": {
     "error": "Invalid username or password",
@@ -58,12 +59,12 @@
   "country": {
     "select": "Choose country"
   },
+  "article": {
+    "title": "Articles"
+  },
   "button": {
     "cancel": "Cancel"
   },
   "article-details": {
-    "error": {
-      "articleNotFound": "Article not found"
-    }
   }
 }
