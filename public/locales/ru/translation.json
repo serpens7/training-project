@@ -57,5 +57,10 @@
   },
   "country": {
     "select": "Укажите страну"
+  },
+  "article-details": {
+    "error": {
+      "articleNotFound": "Статья не найдена"
+    }
   }
 }

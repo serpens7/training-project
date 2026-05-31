@@ -1,64 +1,69 @@
 {
-    "about": {
-        "title": "About us"
-    },
-    "main": {
-        "page": "Home"
-    },
-    "lang": {
-        "switcher": "Русский"
-    },
-    "notFound": {
-        "title": "Page not found"
-    },
-    "error": {
-        "occured": "An unexpected error occured",
-        "reload": "Reload page",
-        "throw-button": "Throw Error",
-        "server": "Server error occured",
-        "incorrectCountry": "Invalid country",
-        "incorrectAge": "Invalid age",
-        "noData": "Invalid data",
-        "incorrectUserData": "First and last name are required"
-    },
-    "login": {
-        "error": "Invalid username or password",
-        "authorization": "Authorization form",
-        "username": "Enter your login",
-        "password": "Enter your password",
-        "submit": "Login"
-    },
-    "navbar": {
-        "exit": "Exit"
-    },
-    "profile": {
-        "page": "Profile",
-        "profile": "Profile",
-        "edit": "Edit",
-        "firstName": "Firstname",
-        "lastName": "Lastname",
-        "error": "Error occured",
-        "refreshPage": "Try refreshing the page",
-        "title": "Profile",
-        "name": "Your name",
-        "lastname": "Your lastname",
-        "age": "Your age",
-        "city": "Your city",
-        "username": "Your login",
-        "avatar": "Your avatar",
-        "button": {
-            "save": "Save",
-            "cancel": "Cancel",
-            "edit": "Edit"
-        }
-    },
-    "currency": {
-        "select": "Choose currency"
-    },
-    "country": {
-        "select": "Choose country"
-    },
+  "about": {
+    "title": "About us"
+  },
+  "main": {
+    "page": "Home"
+  },
+  "lang": {
+    "switcher": "Русский"
+  },
+  "notFound": {
+    "title": "Page not found"
+  },
+  "error": {
+    "occured": "An unexpected error occured",
+    "reload": "Reload page",
+    "throw-button": "Throw Error",
+    "server": "Server error occured",
+    "incorrectCountry": "Invalid country",
+    "incorrectAge": "Invalid age",
+    "noData": "Invalid data",
+    "incorrectUserData": "First and last name are required"
+  },
+  "login": {
+    "error": "Invalid username or password",
+    "authorization": "Authorization form",
+    "username": "Enter your login",
+    "password": "Enter your password",
+    "submit": "Login"
+  },
+  "navbar": {
+    "exit": "Exit"
+  },
+  "profile": {
+    "page": "Profile",
+    "profile": "Profile",
+    "edit": "Edit",
+    "firstName": "Firstname",
+    "lastName": "Lastname",
+    "error": "Error occured",
+    "refreshPage": "Try refreshing the page",
+    "title": "Profile",
+    "name": "Your name",
+    "lastname": "Your lastname",
+    "age": "Your age",
+    "city": "Your city",
+    "username": "Your login",
+    "avatar": "Your avatar",
     "button": {
-        "cancel": "Cancel"
+      "save": "Save",
+      "cancel": "Cancel",
+      "edit": "Edit"
     }
+  },
+  "currency": {
+    "select": "Choose currency"
+  },
+  "country": {
+    "select": "Choose country"
+  },
+  "button": {
+    "cancel": "Cancel"
+  },
+  "article-details": {
+    "error": {
+      "articleNotFound": "Article not found"
+    }
+  }
 }
