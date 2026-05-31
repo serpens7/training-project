@@ -20,7 +20,8 @@
     "incorrectAge": "Недопустимый возраст",
     "noData": "Недопустимые данные",
     "incorrectUserData": "Имя и фамилия обязательны",
-    "articleNotFound": "Статья не найдена"
+    "articleNotFound": "Статья не найдена",
+    "articleError": "Произошла ошибка при загрузке статьи"
   },
   "login": {
     "error": "Вы ввели неверный логин или пароль",
@@ -61,6 +62,5 @@
   "article": {
     "title": "Статьи"
   },
-  "article-details": {
-  }
+  "article-details": {}
 }

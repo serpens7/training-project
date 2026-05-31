@@ -102,7 +102,7 @@ export const ArticleDetails = (props: ArticleDetailsProps) => {
         content = (
             <Text
                 align={TextAlign.CENTER}
-                title={t('Произошла ошибка при загрузке статьи.')}
+                title={t('error.articleError')}
             />
         );
     } else {

@@ -20,7 +20,8 @@
     "incorrectAge": "Invalid age",
     "noData": "Invalid data",
     "incorrectUserData": "First and last name are required",
-    "articleNotFound": "Article not found"
+    "articleNotFound": "Article not found",
+    "articleError": "An error occurred when uploading the article"
   },
   "login": {
     "error": "Invalid username or password",
@@ -65,6 +66,5 @@
   "button": {
     "cancel": "Cancel"
   },
-  "article-details": {
-  }
+  "article-details": {}
 }
