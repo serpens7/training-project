@@ -8,13 +8,24 @@ import { Text } from '@/shared/ui/Text/Text';
 import { CommentList } from '@/entities/Comment/ui/CommentList/CommentList';
 import { getArticleCommentsIsLoading } from '../../model/selectors/comments';
 import { useDispatch, useSelector } from 'react-redux';
-import { getArticleComments } from '../../model/slices/articleDetailsCommentsSlice';
+import {
+    articleDetailsCommentsReducer,
+    getArticleComments,
+} from '../../model/slices/articleDetailsCommentsSlice';
 import { fetchCommentsByArticleId } from '../../model/services/fetchCommentsByArticleId';
 import { useInitialEffect } from '@/shared/lib/hooks/useInitialEffect';
+import {
+    DynamicModuleLoader,
+    ReducersList,
+} from '@/app/providers/config/DynamicModuleLoader';
 
 interface ArticleDetailsPageProps {
     className?: string;
 }
+
+const reducers: ReducersList = {
+    articleDetailsComments: articleDetailsCommentsReducer,
+};
 
 const ArticleDetailsPage = (props: ArticleDetailsPageProps) => {
     const { className = '' } = props;
@@ -39,11 +50,21 @@ const ArticleDetailsPage = (props: ArticleDetailsPageProps) => {
     }
 
     return (
-        <div className={classNames(cls.ArticleDetailsPage, {}, [className])}>
-            <ArticleDetails id={id} />
-            <Text className={cls.commentTittle} title={t('article.comments')} />
-            <CommentList isLoading={commentsIsLoading} comments={comments} />
-        </div>
+        <DynamicModuleLoader reducers={reducers} removeAfterUnmount>
+            <div
+                className={classNames(cls.ArticleDetailsPage, {}, [className])}
+            >
+                <ArticleDetails id={id} />
+                <Text
+                    className={cls.commentTitle}
+                    title={t('article.comments')}
+                />
+                <CommentList
+                    isLoading={commentsIsLoading}
+                    comments={comments}
+                />
+            </div>
+        </DynamicModuleLoader>
     );
 };
 

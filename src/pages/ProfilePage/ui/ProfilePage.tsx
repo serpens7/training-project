@@ -24,6 +24,7 @@ import { ValidateProfileError } from '@/entities/Profile/model/types/profile';
 import { Currency } from '@/entities/Currency';
 import { Country } from '@/entities/Country';
 import { useInitialEffect } from '@/shared/lib/hooks/useInitialEffect';
+import { useParams } from 'react-router-dom';
 
 const reducers: ReducersList = {
     profile: profileReducer,
@@ -41,9 +42,7 @@ const ProfilePage = ({ className }: ProfilePageProps) => {
     const error = useSelector(getProfileError);
     const readonly = useSelector(getProfileReadonly);
     const validateErrors = useSelector(getProfileValidateErrors);
-    useInitialEffect(() => {
-        dispatch(fetchProfileData());
-    });
+    const { id } = useParams<{ id: string }>();
 
     const validateErrorTranslates = {
         [ValidateProfileError.SERVER_ERROR]: t('error.server'),
@@ -54,6 +53,10 @@ const ProfilePage = ({ className }: ProfilePageProps) => {
         ),
         [ValidateProfileError.INCORRECT_AGE]: t('error.incorrectAge'),
     };
+
+    useInitialEffect(() => {
+        if (id) dispatch(fetchProfileData(id));
+    });
 
     const onChangeFirstname = useCallback(
         (value?: string) => {
@@ -115,6 +118,8 @@ const ProfilePage = ({ className }: ProfilePageProps) => {
         },
         [dispatch]
     );
+
+    console.log('formData', formData);
 
     return (
         <DynamicModuleLoader reducers={reducers} removeAfterUnmount>
