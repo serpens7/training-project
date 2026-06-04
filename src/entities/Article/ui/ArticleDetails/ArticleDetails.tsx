@@ -1,7 +1,6 @@
 /* eslint-disable indent */
 import { classNames } from '@/shared/lib/classNames/classNames';
 import { useTranslation } from 'react-i18next';
-import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Text, TextAlign, TextSize } from '@/shared/ui/Text/Text';
 import { Skeleton } from '@/shared/ui/Skeleton/Skeleton';
@@ -26,6 +25,7 @@ import {
 import { ArticleCodeBlockComponent } from '../ArticleCodeBlockComponent/ArticleCodeBlockComponent';
 import { ArticleImageBlockComponent } from '../ArticleImageBlockComponent/ArticleImageBlockComponent';
 import { ArticleTextBlockComponent } from '../ArticleTextBlockComponent/ArticleTextBlockComponent';
+import { useInitialEffect } from '@/shared/lib/hooks/useInitialEffect';
 
 interface ArticleDetailsProps {
     className?: string;
@@ -75,14 +75,11 @@ export const ArticleDetails = (props: ArticleDetailsProps) => {
         }
     };
 
-    useEffect(() => {
-        if (__PROJECT__ !== 'storybook') {
-            dispatch(fetchArticleById(id));
-        }
-    }, [dispatch, id]);
+    useInitialEffect(() => {
+        dispatch(fetchArticleById(id));
+    });
 
     let content;
-
 
     if (isLoading) {
         content = (
@@ -101,10 +98,7 @@ export const ArticleDetails = (props: ArticleDetailsProps) => {
         );
     } else if (error) {
         content = (
-            <Text
-                align={TextAlign.CENTER}
-                title={t('error.articleError')}
-            />
+            <Text align={TextAlign.CENTER} title={t('error.articleError')} />
         );
     } else {
         content = (
