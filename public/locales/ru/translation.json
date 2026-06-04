@@ -60,7 +60,11 @@
     "select": "Укажите страну"
   },
   "article": {
-    "title": "Статьи"
+    "title": "Статьи",
+    "comments": "Комментарии"
   },
-  "article-details": {}
+  "article-details": {},
+  "comments": {
+    "notFound": "Нет комментариев"
+  }
 }

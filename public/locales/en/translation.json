@@ -61,10 +61,14 @@
     "select": "Choose country"
   },
   "article": {
-    "title": "Articles"
+    "title": "Articles",
+    "comments": "Comments"
   },
   "button": {
     "cancel": "Cancel"
   },
-  "article-details": {}
+  "article-details": {},
+  "comments": {
+    "notFound": "No comments"
+  }
 }
