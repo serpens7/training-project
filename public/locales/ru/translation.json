@@ -66,6 +66,8 @@
   },
   "article-details": {},
   "comments": {
-    "notFound": "Нет комментариев"
+    "notFound": "Нет комментариев",
+    "send": "Отправить",
+    "enterText": "Введите текст комментария"
   }
 }

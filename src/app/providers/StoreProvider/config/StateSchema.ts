@@ -1,6 +1,7 @@
 import { ArticleDetailsSchema } from "@/entities/Article/model/types/articleDetailsSchema";
 import { ProfileSchema } from "@/entities/Profile";
 import { UserSchema } from "@/entities/User";
+import { AddCommentFormSchema } from "@/features/AddCommentForm";
 import { LoginSchema } from "@/features/AuthByUserName";
 import { ArticleDetailsCommentsSchema } from "@/pages/ArticleDetailsPage";
 import { AnyAction, Dispatch, EnhancedStore, Reducer, ReducersMapObject } from "@reduxjs/toolkit";
@@ -18,6 +19,7 @@ export interface StateSchema {
     loginForm?: LoginSchema;
     articleDetails?: ArticleDetailsSchema;
     articleDetailsComments?: ArticleDetailsCommentsSchema;
+    addCommentForm?: AddCommentFormSchema;
 }
 
 export type StateSchemaKey = keyof StateSchema;
@@ -43,5 +45,6 @@ export type ThunkConfig<T> = {
     rejectValue: T;
     extra: ThunkExtraArg;
     dispatch?: Dispatch;
+    state: StateSchema;
 }
 

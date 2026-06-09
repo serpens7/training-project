@@ -4,11 +4,14 @@ import { Action, ReducersMapObject } from '@reduxjs/toolkit';
 import { loginReducer } from '@/features/AuthByUserName/model/slice/loginSlice';
 import { profileReducer } from '@/entities/Profile/model/slice/profileSlice';
 import { articleDetailsReducer } from '@/entities/Article/model/slice/articleDetailsSlice';
+import { addCommentFormReducer } from '@/features/AddCommentForm/model/slices/addCommentFormSlice';
 
 const defaultAsyncReducers = {
     loginForm: loginReducer,
     profile: profileReducer,
     articleDetails: articleDetailsReducer,
+    addCommentForm: addCommentFormReducer,
+    articleDetailsComments: articleDetailsReducer,
 };
 
 export const StoreDecorator =

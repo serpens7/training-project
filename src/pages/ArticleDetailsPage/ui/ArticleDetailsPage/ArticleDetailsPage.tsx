@@ -18,6 +18,8 @@ import {
     DynamicModuleLoader,
     ReducersList,
 } from '@/app/providers/config/DynamicModuleLoader';
+import { addCommentForArticle } from '../../model/services/addCommentForArticle';
+import { AddCommentForm } from '@/features/AddCommentForm';
 
 interface ArticleDetailsPageProps {
     className?: string;
@@ -39,6 +41,10 @@ const ArticleDetailsPage = (props: ArticleDetailsPageProps) => {
         dispatch(fetchCommentsByArticleId(id));
     });
 
+    const onSendComment = (text: string) => {
+        dispatch(addCommentForArticle(text));
+    };
+
     if (!id) {
         return (
             <div
@@ -59,6 +65,7 @@ const ArticleDetailsPage = (props: ArticleDetailsPageProps) => {
                     className={cls.commentTitle}
                     title={t('article.comments')}
                 />
+                <AddCommentForm onSendComment={onSendComment} />
                 <CommentList
                     isLoading={commentsIsLoading}
                     comments={comments}
