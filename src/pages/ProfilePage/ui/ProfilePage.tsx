@@ -118,9 +118,6 @@ const ProfilePage = ({ className }: ProfilePageProps) => {
         },
         [dispatch]
     );
-
-    console.log('formData', formData);
-
     return (
         <DynamicModuleLoader reducers={reducers} removeAfterUnmount>
             <div className={classNames('', {}, [className ?? ''])}>

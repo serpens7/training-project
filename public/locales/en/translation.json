@@ -31,7 +31,8 @@
     "submit": "Login"
   },
   "navbar": {
-    "exit": "Exit"
+    "exit": "Exit",
+    "login": "Enter"
   },
   "profile": {
     "page": "Profile",
