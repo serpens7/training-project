@@ -62,7 +62,8 @@
   },
   "article": {
     "title": "Статьи",
-    "comments": "Комментарии"
+    "comments": "Комментарии",
+    "backToList": "Вернуться к списку"
   },
   "article-details": {},
   "comments": {

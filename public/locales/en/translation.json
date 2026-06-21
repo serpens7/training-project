@@ -63,7 +63,8 @@
   },
   "article": {
     "title": "Articles",
-    "comments": "Comments"
+    "comments": "Comments",
+    "backToList": "Back to list"
   },
   "button": {
     "cancel": "Cancel"

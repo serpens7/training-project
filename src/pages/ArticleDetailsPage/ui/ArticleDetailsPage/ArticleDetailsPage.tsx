@@ -1,8 +1,8 @@
 import { classNames } from '@/shared/lib/classNames/classNames';
 import { useTranslation } from 'react-i18next';
-import { memo } from 'react';
+import { memo, useCallback } from 'react';
 import { ArticleDetails } from '@/entities/Article';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import cls from './ArticleDetailsPage.module.scss';
 import { Text } from '@/shared/ui/Text/Text';
 import { CommentList } from '@/entities/Comment/ui/CommentList/CommentList';
@@ -20,6 +20,8 @@ import {
 } from '@/app/providers/config/DynamicModuleLoader';
 import { addCommentForArticle } from '../../model/services/addCommentForArticle';
 import { AddCommentForm } from '@/features/AddCommentForm';
+import { Button, ButtonTheme } from '@/shared/ui/Button/Button';
+import { RoutePath } from '@/shared/config/routeConfig/routeConfig';
 
 interface ArticleDetailsPageProps {
     className?: string;
@@ -35,6 +37,7 @@ const ArticleDetailsPage = (props: ArticleDetailsPageProps) => {
     const { id } = useParams<{ id: string }>();
     const dispatch = useDispatch();
     const comments = useSelector(getArticleComments.selectAll);
+    const navigate = useNavigate();
     const commentsIsLoading = useSelector(getArticleCommentsIsLoading);
 
     useInitialEffect(() => {
@@ -44,6 +47,10 @@ const ArticleDetailsPage = (props: ArticleDetailsPageProps) => {
     const onSendComment = (text: string) => {
         dispatch(addCommentForArticle(text));
     };
+
+    const onBackToList = useCallback(() => {
+        navigate(RoutePath.articles);
+    }, [navigate]);
 
     if (!id) {
         return (
@@ -60,6 +67,9 @@ const ArticleDetailsPage = (props: ArticleDetailsPageProps) => {
             <div
                 className={classNames(cls.ArticleDetailsPage, {}, [className])}
             >
+                <Button theme={ButtonTheme.OUTLINE} onClick={onBackToList}>
+                    {t('article.backToList')}
+                </Button>
                 <ArticleDetails id={id} />
                 <Text
                     className={cls.commentTitle}
