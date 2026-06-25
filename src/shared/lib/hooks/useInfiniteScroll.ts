@@ -4,36 +4,45 @@ export interface UseInfiniteScrollOptions {
     callback?: () => void;
     triggerRef: MutableRefObject<HTMLElement>;
     wrapperRef: MutableRefObject<HTMLElement>;
+    rootMargin?: string;
 }
 
-export function useInfiniteScroll({ callback, wrapperRef, triggerRef }: UseInfiniteScrollOptions) {
-    const observer = useRef<IntersectionObserver | null>(null);
+export function useInfiniteScroll({
+    callback,
+    wrapperRef,
+    triggerRef,
+    rootMargin = '0px 0px 300px 0px',
+}: UseInfiniteScrollOptions) {
+
+    const callbackRef = useRef(callback);
+    useEffect(() => {
+        callbackRef.current = callback;
+    });
 
     useEffect(() => {
         const wrapperElement = wrapperRef.current;
         const triggerElement = triggerRef.current;
 
-        if (callback) {
-            const options = {
-                root: wrapperElement,
-                rootMargin: '0px',
-                threshold: 1.0,
-            };
-
-            observer.current = new IntersectionObserver(([entry]) => {
-                if (entry.isIntersecting) {
-                    callback();
-                }
-            }, options);
-
-            observer.current.observe(triggerElement);
+        if (!triggerElement) {
+            return undefined;
         }
 
-        return () => {
-            if (observer.current && triggerElement) {
-                // eslint-disable-next-line react-hooks/exhaustive-deps
-                observer.current.unobserve(triggerElement);
-            }
+        const options: IntersectionObserverInit = {
+            root: wrapperElement,
+            rootMargin,
+            threshold: 0,
         };
-    }, [callback, triggerRef, wrapperRef]);
+
+        const observer = new IntersectionObserver(([entry]) => {
+            if (entry.isIntersecting) {
+                callbackRef.current?.();
+            }
+        }, options);
+
+        observer.observe(triggerElement);
+
+        return () => {
+            observer.disconnect();
+        };
+    }, [triggerRef, wrapperRef, rootMargin]);
 }

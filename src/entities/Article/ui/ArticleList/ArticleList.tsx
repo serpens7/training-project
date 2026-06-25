@@ -7,22 +7,17 @@ import { Article, ArticleView } from '../../model/types/article';
 
 interface ArticleListProps {
     className?: string;
-    articles: Article[];
+    articles: Article[]
     isLoading?: boolean;
     view?: ArticleView;
 }
 
-const getSkeletons = (view: ArticleView) =>
-    new Array(view === ArticleView.SMALL ? 9 : 3)
-        .fill(0)
-        .map((_, index) => (
-            <ArticleListItemSkeleton
-                className={cls.card}
-                // eslint-disable-next-line react/no-array-index-key
-                key={index + view}
-                view={view}
-            />
-        ));
+const getSkeletons = (view: ArticleView) => new Array(view === ArticleView.SMALL ? 9 : 3)
+    .fill(0)
+    .map((_, index) => (
+        // eslint-disable-next-line react/no-array-index-key
+        <ArticleListItemSkeleton className={cls.card} key={index} view={view} />
+    ));
 
 export const ArticleList = memo((props: ArticleListProps) => {
     const {
@@ -31,19 +26,6 @@ export const ArticleList = memo((props: ArticleListProps) => {
         view = ArticleView.SMALL,
         isLoading,
     } = props;
-
-    if (isLoading) {
-        return (
-            <div
-                className={classNames(cls.ArticleList, {}, [
-                    className,
-                    cls[view],
-                ])}
-            >
-                {getSkeletons(view)}
-            </div>
-        );
-    }
 
     const renderArticle = (article: Article) => (
         <ArticleListItem
@@ -55,10 +37,11 @@ export const ArticleList = memo((props: ArticleListProps) => {
     );
 
     return (
-        <div
-            className={classNames(cls.ArticleList, {}, [className, cls[view]])}
-        >
-            {articles.length > 0 ? articles.map(renderArticle) : null}
+        <div className={classNames(cls.ArticleList, {}, [className, cls[view]])}>
+            {articles.length > 0
+                ? articles.map(renderArticle)
+                : null}
+            {isLoading && getSkeletons(view)}
         </div>
     );
 });

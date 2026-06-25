@@ -29,7 +29,9 @@ const articles = [
 
 describe('fetchArticlesList.test', () => {
     test('success', async () => {
-        const thunk = new TestAsyncThunk(fetchArticlesList);
+        const thunk = new TestAsyncThunk(fetchArticlesList, {
+            articlesPage: { limit: 9 },
+        });
         thunk.api.get.mockReturnValue(Promise.resolve({ data: articles }));
 
         const result = await thunk.callThunk({ page: 1 });
@@ -40,7 +42,9 @@ describe('fetchArticlesList.test', () => {
     });
 
     test('server error', async () => {
-        const thunk = new TestAsyncThunk(fetchArticlesList);
+        const thunk = new TestAsyncThunk(fetchArticlesList, {
+            articlesPage: { limit: 9 },
+        });
         thunk.api.get.mockReturnValue(Promise.resolve({ status: 403 }));
 
         const result = await thunk.callThunk({ page: 1 });

@@ -46,7 +46,7 @@ describe('articlesPageSlice.test', () => {
         expect(
             articlesPageReducer(
                 state as ArticlesPageSchema,
-                fetchArticlesList.pending('', undefined),
+                fetchArticlesList.pending('', { page: 1 }),
             ),
         ).toEqual({ isLoading: true, error: undefined });
     });
@@ -60,10 +60,11 @@ describe('articlesPageSlice.test', () => {
         expect(
             articlesPageReducer(
                 state as ArticlesPageSchema,
-                fetchArticlesList.fulfilled([article1, article2], '', undefined),
+                fetchArticlesList.fulfilled([article1, article2], '', { page: 1 }),
             ),
         ).toEqual({
             isLoading: false,
+            hasMore: true,
             ids: ['1', '2'],
             entities: {
                 1: article1,
@@ -77,7 +78,7 @@ describe('articlesPageSlice.test', () => {
         expect(
             articlesPageReducer(
                 state as ArticlesPageSchema,
-                fetchArticlesList.rejected(null, '', undefined, 'error'),
+                fetchArticlesList.rejected(null, '', { page: 1 }, 'error'),
             ),
         ).toEqual({ isLoading: false, error: 'error' });
     });
