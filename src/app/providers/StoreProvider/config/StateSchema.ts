@@ -31,6 +31,7 @@ export interface ReducerManager {
     reduce: (state: StateSchema, action: AnyAction) => StateSchema;
     add: (key: StateSchemaKey, reducer: Reducer) => void;
     remove: (key: StateSchemaKey) => void;
+    getMountedReducers: () => OptionalRecord<StateSchemaKey, boolean>;
 }
 
 
