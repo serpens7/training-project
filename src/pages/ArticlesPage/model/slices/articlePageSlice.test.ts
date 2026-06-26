@@ -54,6 +54,7 @@ describe('articlesPageSlice.test', () => {
     test('fetchArticlesList fulfilled', () => {
         const state: DeepPartial<ArticlesPageSchema> = {
             isLoading: true,
+            limit: 2,
             ids: [],
             entities: {},
         };
@@ -64,6 +65,7 @@ describe('articlesPageSlice.test', () => {
             ),
         ).toEqual({
             isLoading: false,
+            limit: 2,
             hasMore: true,
             ids: ['1', '2'],
             entities: {

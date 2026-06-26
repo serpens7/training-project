@@ -27,22 +27,45 @@ export function useInfiniteScroll({
             return undefined;
         }
 
-        const options: IntersectionObserverInit = {
-            root: wrapperElement,
-            rootMargin,
-            threshold: 0,
-        };
-
         const observer = new IntersectionObserver(([entry]) => {
             if (entry.isIntersecting) {
                 callbackRef.current?.();
             }
-        }, options);
+        }, {
+            root: wrapperElement,
+            rootMargin,
+            threshold: 0,
+        });
 
         observer.observe(triggerElement);
 
+        // The IntersectionObserver only reacts when the trigger crosses the root
+        // boundary. If freshly loaded content isn't tall enough to push the trigger
+        // past the root margin, it stays "intersecting" and never fires again — you'd
+        // have to scroll up and back down to re-trigger it. Re-observe the trigger
+        // whenever the wrapper's content changes so the observer re-evaluates the
+        // current state and keeps loading until the trigger finally leaves the margin.
+        let frame = 0;
+        const reobserve = () => {
+            cancelAnimationFrame(frame);
+            frame = requestAnimationFrame(() => {
+                observer.unobserve(triggerElement);
+                observer.observe(triggerElement);
+            });
+        };
+
+        const mutationObserver = new MutationObserver(reobserve);
+        if (wrapperElement) {
+            mutationObserver.observe(wrapperElement, {
+                childList: true,
+                subtree: true,
+            });
+        }
+
         return () => {
+            cancelAnimationFrame(frame);
             observer.disconnect();
+            mutationObserver.disconnect();
         };
     }, [triggerRef, wrapperRef, rootMargin]);
 }
