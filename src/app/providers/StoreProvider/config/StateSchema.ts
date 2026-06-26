@@ -3,6 +3,7 @@ import { ProfileSchema } from "@/entities/Profile";
 import { UserSchema } from "@/entities/User";
 import { AddCommentFormSchema } from "@/features/AddCommentForm";
 import { LoginSchema } from "@/features/AuthByUserName";
+import { ScrollRestorationSchema } from "@/features/ScrollRestoration/model/types/ScrollRestorationSchema";
 import { ArticleDetailsCommentsSchema } from "@/pages/ArticleDetailsPage";
 import { ArticlesPageSchema } from "@/pages/ArticlesPage";
 import { AnyAction, Dispatch, EnhancedStore, Reducer, ReducersMapObject } from "@reduxjs/toolkit";
@@ -22,6 +23,7 @@ export interface StateSchema {
     articleDetailsComments?: ArticleDetailsCommentsSchema;
     addCommentForm?: AddCommentFormSchema;
     articlesPage?: ArticlesPageSchema;
+    scrollRestoration?: ScrollRestorationSchema;
 }
 
 export type StateSchemaKey = keyof StateSchema;
