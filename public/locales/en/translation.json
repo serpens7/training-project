@@ -64,7 +64,14 @@
   "article": {
     "title": "Articles",
     "comments": "Comments",
-    "backToList": "Back to list"
+    "backToList": "Back to list",
+    "createDateSort": "date of creation",
+    "titleSort": "by name",
+    "viewsSort": "by views",
+    "sortBy": "sort by",
+    "orderBy": "order",
+    "decrement": "decrement",
+    "increment": "increment"
   },
   "button": {
     "cancel": "Cancel"
@@ -74,5 +81,11 @@
     "notFound": "No comments",
     "send": "Send",
     "enterText": "Enter comment text"
+  },
+  "articles": {
+    "allArticles": "All",
+    "it": "IT",
+    "economics": "Economy",
+    "science": "Science"
   }
 }

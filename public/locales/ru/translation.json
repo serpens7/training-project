@@ -63,12 +63,25 @@
   "article": {
     "title": "Статьи",
     "comments": "Комментарии",
-    "backToList": "Вернуться к списку"
+    "backToList": "Вернуться к списку",
+    "createDateSort": "дате создания",
+    "titleSort": "названию",
+    "viewsSort": "просмотрам",
+    "sortBy": "сортировать",
+    "orderBy": "порядок",
+    "decrement": "убыванию",
+    "increment": "возрастанию"
   },
   "article-details": {},
   "comments": {
     "notFound": "Нет комментариев",
     "send": "Отправить",
     "enterText": "Введите текст комментария"
+  },
+  "articles": {
+    "allArticles": "Все",
+    "it": "Айти",
+    "economics": "Экономика",
+    "science": "Наука"
   }
 }
