@@ -72,7 +72,8 @@
     "orderBy": "by",
     "decrement": "decrement",
     "increment": "increment",
-    "recommendations": "Recomendations"
+    "recommendations": "Recomendations",
+    "readMore": "Read more..."
   },
   "button": {
     "cancel": "Cancel"

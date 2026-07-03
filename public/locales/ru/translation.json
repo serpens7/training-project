@@ -71,7 +71,8 @@
     "orderBy": "по",
     "decrement": "убыванию",
     "increment": "возрастанию",
-    "recommendations": "Рекомендации"
+    "recommendations": "Рекомендации",
+    "readMore": "Читать далее..."
   },
   "article-details": {},
   "comments": {
