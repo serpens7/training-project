@@ -3,11 +3,11 @@ import { ProfileSchema } from "@/entities/Profile";
 import { UserSchema } from "@/entities/User";
 import { AddCommentFormSchema } from "@/features/AddCommentForm";
 import { LoginSchema } from "@/features/AuthByUserName";
-import { ArticleDetailsCommentsSchema } from "@/pages/ArticleDetailsPage";
 import { ArticlesPageSchema } from "@/pages/ArticlesPage";
 import { AnyAction, Dispatch, EnhancedStore, Reducer, ReducersMapObject } from "@reduxjs/toolkit";
 import { AxiosInstance } from "axios";
 import { NavigateOptions, To } from "react-router-dom";
+import { ArticleDetailsPageSchema } from "@/pages/ArticleDetailsPage/types/ArticleDetailsRecommendationsSchema";
 
 export interface CounterSchema {
     value: number;
@@ -19,9 +19,9 @@ export interface StateSchema {
     profile?: ProfileSchema;
     loginForm?: LoginSchema;
     articleDetails?: ArticleDetailsSchema;
-    articleDetailsComments?: ArticleDetailsCommentsSchema;
     addCommentForm?: AddCommentFormSchema;
     articlesPage?: ArticlesPageSchema;
+    articleDetailsPage?: ArticleDetailsPageSchema;
 }
 
 export type StateSchemaKey = keyof StateSchema;
