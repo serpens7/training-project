@@ -70,7 +70,8 @@
     "sortBy": "сортировать",
     "orderBy": "по",
     "decrement": "убыванию",
-    "increment": "возрастанию"
+    "increment": "возрастанию",
+    "recommendations": "Рекомендации"
   },
   "article-details": {},
   "comments": {
