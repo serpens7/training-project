@@ -3,11 +3,12 @@ import { useTranslation } from 'react-i18next';
 import { memo, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import cls from './ArticlesPageFilters.module.scss';
-import { ArticleSortSelector, ArticleView } from '@/entities/Article';
 import {
     ArticleSortField,
+    ArticleSortSelector,
     ArticleType,
-} from '@/entities/Article/model/types/article';
+    ArticleView,
+} from '@/entities/Article';
 import { ArticleViewSelector } from '@/entities/Article/ui/ArticleViewSelector/ArticleViewSelector';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { Card } from '@/shared/ui/Card/Card';
