@@ -66,10 +66,10 @@
     "comments": "Comments",
     "backToList": "Back to list",
     "createDateSort": "date of creation",
-    "titleSort": "by name",
-    "viewsSort": "by views",
+    "titleSort": "names",
+    "viewsSort": "views",
     "sortBy": "sort by",
-    "orderBy": "order",
+    "orderBy": "by",
     "decrement": "decrement",
     "increment": "increment"
   },
