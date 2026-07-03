@@ -87,5 +87,12 @@
     "it": "IT",
     "economics": "Economy",
     "science": "Science"
-  }
+  },
+  "sidebar": {
+    "main": "Home",
+    "about": "About",
+    "profile": "Profile",
+    "articles": "Articles"
+  },
+  "search": "Search"
 }
