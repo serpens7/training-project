@@ -8,8 +8,9 @@ import {
     ArticleSortSelector,
     ArticleType,
     ArticleView,
+    ArticleViewSelector,
+    ArticleTypeTabs,
 } from '@/entities/Article';
-import { ArticleViewSelector } from '@/entities/Article/ui/ArticleViewSelector/ArticleViewSelector';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { Card } from '@/shared/ui/Card/Card';
 import { Input } from '@/shared/ui/Input/Input';
@@ -23,7 +24,6 @@ import {
 import { articlesPageActions } from '../../model/slices/articlePageSlice';
 import { fetchArticlesList } from '../../model/services/fetchArticlesList';
 import { useDebounce } from '@/shared/lib/hooks/useDebounce';
-import { ArticleTypeTabs } from '@/entities/Article/ui/ArticleTypeTabs/ArticleTypeTabs';
 import { SortOrder } from '@/shared/types/types';
 
 interface ArticlesPageFiltersProps {

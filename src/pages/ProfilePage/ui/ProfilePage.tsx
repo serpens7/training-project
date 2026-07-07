@@ -12,20 +12,20 @@ import {
     getProfileValidateErrors,
     profileActions,
     profileReducer,
+    ProfileCard,
+    ValidateProfileError,
 } from '@/entities/Profile';
 import { useCallback } from 'react';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
-import { ProfileCard } from '@/entities/Profile/ui/ProfileCard/ProfileCard';
 import { useSelector } from 'react-redux';
 import { ProfilePageHeader } from './ProfilePageHeader/ProfilePageHeader';
 import { useTranslation } from 'react-i18next';
 import { Text, TextTheme } from '@/shared/ui/Text/Text';
-import { ValidateProfileError } from '@/entities/Profile/model/types/profile';
 import { Currency } from '@/entities/Currency';
 import { Country } from '@/entities/Country';
 import { useInitialEffect } from '@/shared/lib/hooks/useInitialEffect';
 import { useParams } from 'react-router-dom';
-import { Page } from '@/widgets/Page/Page';
+import { Page } from '@/widgets/Page';
 
 const reducers: ReducersList = {
     profile: profileReducer,

@@ -5,7 +5,7 @@ import { Sidebar } from '@/widgets/Sidebar';
 import { Suspense, useEffect } from 'react';
 import './styles/index.scss';
 import { useTheme } from '@/shared/lib/hooks/useTheme';
-import { userActions } from '@/entities/User/model/slice/userSlice';
+import { userActions } from '@/entities/User';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserInited } from '@/entities/User';
 

@@ -2,9 +2,12 @@ import { HTMLAttributeAnchorTarget, memo } from 'react';
 import { Virtuoso, VirtuosoGrid, ListRange } from 'react-virtuoso';
 import { useLocation } from 'react-router-dom';
 import { classNames } from '@/shared/lib/classNames/classNames';
-import { Article, ArticleView } from '@/entities/Article';
-import { ArticleListItem } from '@/entities/Article/ui/ArticleListItem/ArticleListItem';
-import { ArticleListItemSkeleton } from '@/entities/Article/ui/ArticleListItem/ArticleListItemSkeleton';
+import {
+    Article,
+    ArticleView,
+    ArticleListItem,
+    ArticleListItemSkeleton,
+} from '@/entities/Article';
 import { ArticlesPageFilters } from '../ArticlesPageFilters/ArticlesPageFilters';
 import cls from './ArticlesPageList.module.scss';
 

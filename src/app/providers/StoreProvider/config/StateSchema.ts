@@ -1,4 +1,4 @@
-import { ArticleDetailsSchema } from "@/entities/Article/model/types/articleDetailsSchema";
+import { ArticleDetailsSchema } from "@/entities/Article";
 import { ProfileSchema } from "@/entities/Profile";
 import { UserSchema } from "@/entities/User";
 import { AddCommentFormSchema } from "@/features/AddCommentForm";
@@ -7,7 +7,7 @@ import { ArticlesPageSchema } from "@/pages/ArticlesPage";
 import { AnyAction, Dispatch, EnhancedStore, Reducer, ReducersMapObject } from "@reduxjs/toolkit";
 import { AxiosInstance } from "axios";
 import { NavigateOptions, To } from "react-router-dom";
-import { ArticleDetailsPageSchema } from "@/pages/ArticleDetailsPage/types/ArticleDetailsRecommendationsSchema";
+import { ArticleDetailsPageSchema } from "@/pages/ArticleDetailsPage";
 
 export interface CounterSchema {
     value: number;

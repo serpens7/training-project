@@ -5,7 +5,7 @@ import { ArticleDetails, ArticleList } from '@/entities/Article';
 import { useParams } from 'react-router-dom';
 import cls from './ArticleDetailsPage.module.scss';
 import { Text, TextSize } from '@/shared/ui/Text/Text';
-import { CommentList } from '@/entities/Comment/ui/CommentList/CommentList';
+import { CommentList } from '@/entities/Comment';
 import { getArticleCommentsIsLoading } from '../../model/selectors/comments';
 import { useDispatch, useSelector } from 'react-redux';
 import { getArticleComments } from '../../model/slices/articleDetailsCommentsSlice';
@@ -17,7 +17,7 @@ import {
 } from '@/shared/lib/components/DynamicModuleLoader';
 import { addCommentForArticle } from '../../model/services/addCommentForArticle';
 import { AddCommentForm } from '@/features/AddCommentForm';
-import { Page } from '@/widgets/Page/Page';
+import { Page } from '@/widgets/Page';
 import { fetchArticleRecommendations } from '../../model/services/fetchArticleRecommendations';
 import { getArticleRecommendationsIsLoading } from '../../model/selectors/recommendations';
 import { getArticleRecommendations } from '../../model/slices/articleDetailsPageRecommendationsSlice';

@@ -12,7 +12,7 @@ import {
     updateProfileData,
 } from '@/entities/Profile';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
-import { getUserAuthData } from '@/entities/User/model/selectors/getUserAuthData';
+import { getUserAuthData } from '@/entities/User';
 
 interface ProfilePageHeaderProps {
     className?: string;

@@ -5,8 +5,8 @@ import { Input } from '@/shared/ui/Input/Input';
 import cls from './ProfileCard.module.scss';
 import { Profile } from '../../model/types/profile';
 import { Avatar } from '@/shared/ui/Avatar/Avatar';
-import { Currency, CurrencySelect } from '@/entities/Currency';
-import { Country, CountrySelect } from '@/entities/Country';
+import { Currency, CurrencySelect } from '@/entities/Currency/@x/Profile';
+import { Country, CountrySelect } from '@/entities/Country/@x/Profile';
 import { Loader } from '@/shared/ui/Loader/Loader';
 
 interface ProfileCardProps {
