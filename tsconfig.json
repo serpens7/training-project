@@ -39,5 +39,6 @@
             "skipLibCheck": true,
             "types": ["node"]
         }
-    }
+    },
+    "exclude": ["node_modules", "dist", "steiger.config.ts"]
 }
