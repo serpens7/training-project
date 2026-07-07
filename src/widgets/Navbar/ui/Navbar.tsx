@@ -37,12 +37,11 @@ export const Navbar = memo(({ className = '' }: NavbarProps) => {
         return (
             <header className={classNames(cls.Navbar, {}, [className])}>
                 <div className={cls.titleWrapper}>
-                    <Text
-                        className={cls.appName}
-                        title={t('IT-NEWS')}
-                    />
+                    <AppLink to={RoutePath.main} className={cls.appName}>
+                        <Text title={t('IT-NEWS')} />
+                    </AppLink>
                     <AppLink
-                        to={RoutePath.article_create + authData.id}
+                        to={RoutePath.article_create}
                         theme={AppLinkTheme.SECONDARY}
                         className={cls.createBtn}
                     >
