@@ -7,27 +7,26 @@
     padding: 20px;
 }
 
-.titleWrapper {
-    display: flex;
-    align-items: center;
+.appName {
     flex-shrink: 0;
-}
 
-.appName p {
-    color: var(--bg-color);
-    font: var(--font-l);
-    font-weight: 700;
+    p {
+        color: var(--bg-color);
+        font: var(--font-l);
+        font-weight: 700;
+    }
 }
 
 .createBtn {
     margin-left: 48px;
     white-space: nowrap;
+    flex-shrink: 0;
 }
 
-.innerNavbar {
+.rightSide {
     display: flex;
     justify-content: flex-end;
     align-items: center;
     gap: 16px;
-    width: 100%;
+    margin-left: auto;
 }

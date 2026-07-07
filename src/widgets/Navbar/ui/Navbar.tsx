@@ -33,13 +33,14 @@ export const Navbar = memo(({ className = '' }: NavbarProps) => {
         dispatch(userActions.logout());
     }, [dispatch]);
 
-    if (authData) {
-        return (
-            <header className={classNames(cls.Navbar, {}, [className])}>
-                <div className={cls.titleWrapper}>
-                    <AppLink to={RoutePath.main} className={cls.appName}>
-                        <Text title={t('IT-NEWS')} />
-                    </AppLink>
+    return (
+        <header className={classNames(cls.Navbar, {}, [className])}>
+            <AppLink to={RoutePath.main} className={cls.appName}>
+                <Text title={t('IT-NEWS')} />
+            </AppLink>
+
+            {authData ? (
+                <>
                     <AppLink
                         to={RoutePath.article_create}
                         theme={AppLinkTheme.SECONDARY}
@@ -47,27 +48,28 @@ export const Navbar = memo(({ className = '' }: NavbarProps) => {
                     >
                         {t('article.createArticle')}
                     </AppLink>
-                </div>
-                <div className={cls.innerNavbar}>
-                    <Text text={`${authData.username}`} />
+                    <div className={cls.rightSide}>
+                        <Text text={`${authData.username}`} />
+                        <Button
+                            theme={ButtonTheme.CLEAR_INVERTED}
+                            onClick={onLogout}
+                        >
+                            {t('navbar.exit')}
+                        </Button>
+                    </div>
+                </>
+            ) : (
+                <div className={cls.rightSide}>
                     <Button
                         theme={ButtonTheme.CLEAR_INVERTED}
-                        onClick={onLogout}
+                        onClick={onShowModal}
                     >
-                        {t('navbar.exit')}
+                        {t('navbar.login')}
                     </Button>
+                    {isAuthModal && (
+                        <LoginModal isOpen={isAuthModal} onClose={onCloseModal} />
+                    )}
                 </div>
-            </header>
-        );
-    }
-
-    return (
-        <header className={classNames(cls.Navbar, {}, [className])}>
-            <Button theme={ButtonTheme.CLEAR_INVERTED} onClick={onShowModal}>
-                {t('navbar.login')}
-            </Button>
-            {isAuthModal && (
-                <LoginModal isOpen={isAuthModal} onClose={onCloseModal} />
             )}
         </header>
     );
