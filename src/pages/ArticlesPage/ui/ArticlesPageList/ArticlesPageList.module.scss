@@ -1,0 +1,35 @@
+// The scroller (Virtuoso root) must span the full width so its scrollbar hugs
+// the right edge — padding lives on the content, not on the scroll container.
+.wrapper {
+    box-sizing: border-box;
+    flex-grow: 1;
+    flex-shrink: 100;
+    min-width: 0;
+    height: calc(100vh - var(--navbar-height));
+}
+
+.header {
+    padding: 20px 20px 0 45px;
+}
+
+.itemsWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    padding: 20px 20px 20px 45px;
+}
+
+.bigCard {
+    margin: 0 20px 30px 45px;
+}
+
+.skeletonsGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    padding: 20px 20px 20px 45px;
+}
+
+.skeletonsList {
+    padding-top: 20px;
+}
