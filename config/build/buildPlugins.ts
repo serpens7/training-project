@@ -1,12 +1,14 @@
 import webpack from 'webpack';
+import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import CopyPlugin from 'copy-webpack-plugin';
 import { BuildOptions } from './types/config';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 // eslint-disable-next-line max-len
 export function buildPlugins({ paths, isDev, apiUrl, project }: BuildOptions): webpack.WebpackPluginInstance[] {
-    return [
+    const plugins: webpack.WebpackPluginInstance[] = [
         new HtmlWebpackPlugin({
             template: paths.html,
         }),
@@ -25,5 +27,21 @@ export function buildPlugins({ paths, isDev, apiUrl, project }: BuildOptions): w
             analyzerMode: 'static',
             openAnalyzer: false,
         }),
-    ]
+    ];
+
+    if (!isDev) {
+        // Runtime i18next loads locales from /locales/{{lng}}/{{ns}}.json, so the
+        // public/locales folder must be emitted into the build output. In dev this
+        // is served automatically by webpack-dev-server from public/.
+        plugins.push(new CopyPlugin({
+            patterns: [
+                {
+                    from: path.resolve(paths.public, 'locales'),
+                    to: path.resolve(paths.build, 'locales'),
+                },
+            ],
+        }));
+    }
+
+    return plugins;
 }
