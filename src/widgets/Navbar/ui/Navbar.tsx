@@ -8,6 +8,8 @@ import { getUserAuthData } from '@/entities/User/model/selectors/getUserAuthData
 import { useDispatch, useSelector } from 'react-redux';
 import { userActions } from '@/entities/User/model/slice/userSlice';
 import { Text } from '@/shared/ui/Text/Text';
+import { RoutePath } from '@/shared/config/routeConfig/routeConfig';
+import { AppLink, AppLinkTheme } from '@/shared/ui/AppLink/AppLink';
 
 interface NavbarProps {
     className?: string;
@@ -34,8 +36,21 @@ export const Navbar = memo(({ className = '' }: NavbarProps) => {
     if (authData) {
         return (
             <header className={classNames(cls.Navbar, {}, [className])}>
+                <div className={cls.titleWrapper}>
+                    <Text
+                        className={cls.appName}
+                        title={t('IT-NEWS')}
+                    />
+                    <AppLink
+                        to={RoutePath.article_create + authData.id}
+                        theme={AppLinkTheme.SECONDARY}
+                        className={cls.createBtn}
+                    >
+                        {t('article.createArticle')}
+                    </AppLink>
+                </div>
                 <div className={cls.innerNavbar}>
-                    <Text text={` ${authData.username}`} />
+                    <Text text={`${authData.username}`} />
                     <Button
                         theme={ButtonTheme.CLEAR_INVERTED}
                         onClick={onLogout}

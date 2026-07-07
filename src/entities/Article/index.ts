@@ -26,3 +26,5 @@ export { ArticleSortSelector } from './ui/ArticleSortSelector/ArticleSortSelecto
 
 export type { ArticleDetailsSchema } from './model/types/articleDetailsSchema';
 
+export { getArticleDetailsData } from './model/selectors/articleDetails';
+

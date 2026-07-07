@@ -3,9 +3,25 @@
     height: var(--navbar-height);
     background: var(--inverted-bg-color);
     display: flex;
-    justify-content: flex-end;
     align-items: center;
     padding: 20px;
+}
+
+.titleWrapper {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.appName p {
+    color: var(--bg-color);
+    font: var(--font-l);
+    font-weight: 700;
+}
+
+.createBtn {
+    margin-left: 24px;
+    white-space: nowrap;
 }
 
 .innerNavbar {
@@ -14,8 +30,4 @@
     align-items: center;
     gap: 16px;
     width: 100%;
-}
-
-.mainLink {
-    margin-right: 15px;
 }

@@ -73,7 +73,10 @@
     "decrement": "decrement",
     "increment": "increment",
     "recommendations": "Recomendations",
-    "readMore": "Read more..."
+    "readMore": "Read more...",
+    "newArticleCreation": "New article creation",
+    "editWithId": "Edit with ID =",
+    "createArticle": "Create article"
   },
   "button": {
     "cancel": "Cancel"
@@ -96,5 +99,7 @@
     "profile": "Profile",
     "articles": "Articles"
   },
-  "search": "Search"
+  "search": "Search",
+  "edit": "Edit",
+  "IT-NEWS": "It-news"
 }

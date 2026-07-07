@@ -72,7 +72,10 @@
     "decrement": "убыванию",
     "increment": "возрастанию",
     "recommendations": "Рекомендации",
-    "readMore": "Читать далее..."
+    "readMore": "Читать далее...",
+    "newArticleCreation": "Создание новой статьи",
+    "editWithId": "Редактирование статьи с ID = ",
+    "createArticle": "Создать статью"
   },
   "article-details": {},
   "comments": {
@@ -92,5 +95,7 @@
     "profile": "Профиль",
     "articles": "Статьи"
   },
-  "search": "Поиск"
+  "search": "Поиск",
+  "edit": "Редактировать",
+  "IT-NEWS": "IT-news"
 }
