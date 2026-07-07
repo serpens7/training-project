@@ -8,7 +8,7 @@ import { getUserAuthData } from '@/entities/User/model/selectors/getUserAuthData
 import { useDispatch, useSelector } from 'react-redux';
 import { userActions } from '@/entities/User/model/slice/userSlice';
 import { Text } from '@/shared/ui/Text/Text';
-import { RoutePath } from '@/shared/config/routeConfig/routeConfig';
+import { RoutePath } from '@/shared/const/router';
 import { AppLink, AppLinkTheme } from '@/shared/ui/AppLink/AppLink';
 
 interface NavbarProps {

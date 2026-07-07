@@ -14,7 +14,7 @@ import { useInitialEffect } from '@/shared/lib/hooks/useInitialEffect';
 import {
     DynamicModuleLoader,
     ReducersList,
-} from '@/app/providers/config/DynamicModuleLoader';
+} from '@/shared/lib/components/DynamicModuleLoader';
 import { addCommentForArticle } from '../../model/services/addCommentForArticle';
 import { AddCommentForm } from '@/features/AddCommentForm';
 import { Page } from '@/widgets/Page/Page';

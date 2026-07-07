@@ -13,7 +13,7 @@ import { getAddCommentFormText } from '../model/selectors/addCommentFormSelector
 import {
     DynamicModuleLoader,
     ReducersList,
-} from '@/app/providers/config/DynamicModuleLoader';
+} from '@/shared/lib/components/DynamicModuleLoader';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 
 export interface AddCommentFormProps {

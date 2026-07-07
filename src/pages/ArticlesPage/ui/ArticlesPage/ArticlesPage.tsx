@@ -2,7 +2,7 @@ import { memo, useCallback } from 'react';
 import {
     DynamicModuleLoader,
     ReducersList,
-} from '@/app/providers/config/DynamicModuleLoader';
+} from '@/shared/lib/components/DynamicModuleLoader';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useInitialEffect } from '@/shared/lib/hooks/useInitialEffect';
 import { useSelector } from 'react-redux';

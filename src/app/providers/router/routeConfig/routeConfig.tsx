@@ -1,4 +1,3 @@
-import { RouteProps } from 'react-router-dom';
 import { AboutPage } from '@/pages/AboutPage';
 import { MainPage } from '@/pages/MainPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
@@ -6,32 +5,7 @@ import { ProfilePage } from '@/pages/ProfilePage';
 import { ArticlesPage } from '@/pages/ArticlesPage';
 import { ArticleDetailsPage } from '@/pages/ArticleDetailsPage';
 import { ArticleEditPage } from '@/pages/ArticleEditPage';
-
-export enum AppRoutes {
-    MAIN = 'main',
-    ABOUT = 'about',
-    NOT_FOUND = 'not_found',
-    PROFILE = 'profile',
-    ARTICLE_DETAILS = 'article_details',
-    ARTICLE_CREATE = 'article_create',
-    ARTICLE_EDIT = 'article_edit',
-    ARTICLES = 'articles',
-}
-
-export type AppRouteProps = RouteProps & {
-    authOnly?: boolean;
-};
-
-export const RoutePath: Record<AppRoutes, string> = {
-    [AppRoutes.MAIN]: '/',
-    [AppRoutes.ABOUT]: '/about',
-    [AppRoutes.NOT_FOUND]: '*',
-    [AppRoutes.PROFILE]: '/profile/',
-    [AppRoutes.ARTICLES]: '/articles',
-    [AppRoutes.ARTICLE_DETAILS]: '/articles/',
-    [AppRoutes.ARTICLE_CREATE]: '/articles/new',
-    [AppRoutes.ARTICLE_EDIT]: '/articles/:id/edit',
-};
+import { AppRoutes, AppRouteProps, RoutePath } from '@/shared/const/router';
 
 export const routeConfig: Record<AppRoutes, AppRouteProps> = {
     [AppRoutes.MAIN]: {

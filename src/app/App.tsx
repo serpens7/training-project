@@ -4,7 +4,7 @@ import { Navbar } from '@/widgets/Navbar';
 import { Sidebar } from '@/widgets/Sidebar';
 import { Suspense, useEffect } from 'react';
 import './styles/index.scss';
-import { useTheme } from './providers/ThemeProvider';
+import { useTheme } from '@/shared/lib/hooks/useTheme';
 import { userActions } from '@/entities/User/model/slice/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserInited } from '@/entities/User';

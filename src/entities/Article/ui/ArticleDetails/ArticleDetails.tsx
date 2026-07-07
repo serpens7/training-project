@@ -21,7 +21,7 @@ import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import {
     DynamicModuleLoader,
     ReducersList,
-} from '@/app/providers/config/DynamicModuleLoader';
+} from '@/shared/lib/components/DynamicModuleLoader';
 import { ArticleCodeBlockComponent } from '../ArticleCodeBlockComponent/ArticleCodeBlockComponent';
 import { ArticleImageBlockComponent } from '../ArticleImageBlockComponent/ArticleImageBlockComponent';
 import { ArticleTextBlockComponent } from '../ArticleTextBlockComponent/ArticleTextBlockComponent';

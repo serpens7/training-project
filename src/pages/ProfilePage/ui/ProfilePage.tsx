@@ -1,7 +1,7 @@
 import {
     DynamicModuleLoader,
     ReducersList,
-} from '@/app/providers/config/DynamicModuleLoader';
+} from '@/shared/lib/components/DynamicModuleLoader';
 import { classNames } from '@/shared/lib/classNames/classNames';
 import {
     fetchProfileData,
