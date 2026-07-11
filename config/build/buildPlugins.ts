@@ -37,7 +37,7 @@ export function buildPlugins({ paths, isDev, apiUrl, project }: BuildOptions): w
             patterns: [
                 {
                     from: path.resolve(paths.public, 'locales'),
-                    to: path.resolve(paths.build, 'locales'),
+                    to: paths.buildLocales,
                 },
             ],
         }));
