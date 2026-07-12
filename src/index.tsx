@@ -1,4 +1,4 @@
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './app/App';
 import { ThemeProvider } from './app/providers/ThemeProvider';
@@ -7,7 +7,17 @@ import { ErrorBoundary } from './app/providers/ErrorBoundary';
 import './app/styles/index.scss';
 import { StoreProvider } from './app/providers/StoreProvider';
 
-render(
+const container = document.getElementById('root');
+
+if (!container) {
+    throw new Error(
+        'Root container not found. Unable to mount the React application.'
+    );
+}
+
+const root = createRoot(container);
+
+root.render(
     <BrowserRouter>
         <StoreProvider>
             <ErrorBoundary>
@@ -16,6 +26,5 @@ render(
                 </ThemeProvider>
             </ErrorBoundary>
         </StoreProvider>
-    </BrowserRouter>,
-    document.getElementById('root')
+    </BrowserRouter>
 );

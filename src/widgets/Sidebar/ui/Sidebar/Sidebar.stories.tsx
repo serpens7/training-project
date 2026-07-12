@@ -1,4 +1,4 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { StoryFn, Meta } from '@storybook/react';
 import { ThemeDecorator } from '@/shared/config/storybook/ThemeDecorator/ThemeDecorator';
 import { Theme } from '@/shared/const/theme';
 import { StoreDecorator } from '@/shared/config/storybook/StoreDecorator/StoreDecorator';
@@ -10,9 +10,9 @@ export default {
     argTypes: {
         backgroundColor: { control: 'color' },
     },
-} as ComponentMeta<typeof Sidebar>;
+} as Meta<typeof Sidebar>;
 
-const Template: ComponentStory<typeof Sidebar> = (args) => (
+const Template: StoryFn<typeof Sidebar> = (args) => (
     <Sidebar {...args} />
 );
 

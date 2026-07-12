@@ -1,4 +1,4 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 import { ThemeDecorator } from '@/shared/config/storybook/ThemeDecorator/ThemeDecorator';
 import { Theme } from '@/shared/const/theme';
 import { AppLink, AppLinkTheme } from './AppLink';
@@ -12,9 +12,9 @@ export default {
     args: {
         to: '/',
     },
-} as ComponentMeta<typeof AppLink>;
+} as Meta<typeof AppLink>;
 
-const Template: ComponentStory<typeof AppLink> = (args) => (
+const Template: StoryFn<typeof AppLink> = (args) => (
     <AppLink {...args} />
 );
 

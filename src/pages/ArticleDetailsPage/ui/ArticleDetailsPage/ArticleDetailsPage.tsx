@@ -7,7 +7,8 @@ import cls from './ArticleDetailsPage.module.scss';
 import { Text, TextSize } from '@/shared/ui/Text/Text';
 import { CommentList } from '@/entities/Comment';
 import { getArticleCommentsIsLoading } from '../../model/selectors/comments';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { getArticleComments } from '../../model/slices/articleDetailsCommentsSlice';
 import { fetchCommentsByArticleId } from '../../model/services/fetchCommentsByArticleId';
 import { useInitialEffect } from '@/shared/lib/hooks/useInitialEffect';
@@ -36,7 +37,7 @@ const ArticleDetailsPage = (props: ArticleDetailsPageProps) => {
     const { className = '' } = props;
     const { t } = useTranslation();
     const { id } = useParams<{ id: string }>();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const comments = useSelector(getArticleComments.selectAll);
     const commentsIsLoading = useSelector(getArticleCommentsIsLoading);
 
