@@ -1,4 +1,4 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 import { ThemeDecorator } from '@/shared/config/storybook/ThemeDecorator/ThemeDecorator';
 import { Theme } from '@/shared/const/theme';
 import ProfilePage from './ProfilePage';
@@ -10,9 +10,9 @@ export default {
     argTypes: {
         backgroundColor: { control: 'color' },
     },
-} as ComponentMeta<typeof ProfilePage>;
+} as Meta<typeof ProfilePage>;
 
-const Template: ComponentStory<typeof ProfilePage> = (args) => (
+const Template: StoryFn<typeof ProfilePage> = (args) => (
     <ProfilePage {...args} />
 );
 

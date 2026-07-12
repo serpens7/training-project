@@ -79,7 +79,9 @@
     "createArticle": "Create article"
   },
   "button": {
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "save": "Save"
   },
   "article-details": {},
   "comments": {

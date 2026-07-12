@@ -1,4 +1,4 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { StoryFn, Meta } from '@storybook/react';
 
 import { CommentList } from './CommentList';
 
@@ -8,9 +8,9 @@ export default {
     argTypes: {
         backgroundColor: { control: 'color' },
     },
-} as ComponentMeta<typeof CommentList>;
+} as Meta<typeof CommentList>;
 
-const Template: ComponentStory<typeof CommentList> = (args) => (
+const Template: StoryFn<typeof CommentList> = (args) => (
     <CommentList {...args} />
 );
 
