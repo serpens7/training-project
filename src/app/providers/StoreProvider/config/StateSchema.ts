@@ -8,6 +8,7 @@ import { AnyAction, Dispatch, EnhancedStore, Reducer, ReducersMapObject } from "
 import { AxiosInstance } from "axios";
 import { NavigateOptions, To } from "react-router-dom";
 import { ArticleDetailsPageSchema } from "@/pages/ArticleDetailsPage";
+import { rtkApi } from "@/shared/api/rtkApi";
 
 export interface CounterSchema {
     value: number;
@@ -22,6 +23,8 @@ export interface StateSchema {
     addCommentForm?: AddCommentFormSchema;
     articlesPage?: ArticlesPageSchema;
     articleDetailsPage?: ArticleDetailsPageSchema;
+
+    [rtkApi.reducerPath]: ReturnType<typeof rtkApi.reducer>;
 }
 
 export type StateSchemaKey = keyof StateSchema;

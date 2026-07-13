@@ -5,6 +5,7 @@ import { userReducer } from '@/entities/User';
 import { createReducerManager } from './reducerManager';
 import { Reducer, AnyAction } from 'redux';
 import { $api } from '@/shared/api/api';
+import { rtkApi } from '@/shared/api/rtkApi';
 
 export function createReduxStore(
     initialState?: StateSchema,
@@ -13,6 +14,7 @@ export function createReduxStore(
         ...asyncReducers,
         counter: counterReducer,
         user: userReducer,
+        [rtkApi.reducerPath]: rtkApi.reducer,
     };
 
     const reducerManager = createReducerManager(rootReducers);
@@ -27,7 +29,7 @@ export function createReduxStore(
                     api: $api
                 },
             }
-        }),
+        }).concat(rtkApi.middleware),
     });
 
     // @ts-ignore
