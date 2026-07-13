@@ -1,13 +1,11 @@
 import { ArticleDetailsSchema } from "@/entities/Article";
 import { ProfileSchema } from "@/entities/Profile";
 import { UserSchema } from "@/entities/User";
-import { AddCommentFormSchema } from "@/features/AddCommentForm";
 import { LoginSchema } from "@/features/AuthByUserName";
 import { ArticlesPageSchema } from "@/pages/ArticlesPage";
 import { AnyAction, Dispatch, EnhancedStore, Reducer, ReducersMapObject } from "@reduxjs/toolkit";
 import { AxiosInstance } from "axios";
 import { NavigateOptions, To } from "react-router-dom";
-import { ArticleDetailsPageSchema } from "@/pages/ArticleDetailsPage";
 import { rtkApi } from "@/shared/api/rtkApi";
 
 export interface CounterSchema {
@@ -20,9 +18,7 @@ export interface StateSchema {
     profile?: ProfileSchema;
     loginForm?: LoginSchema;
     articleDetails?: ArticleDetailsSchema;
-    addCommentForm?: AddCommentFormSchema;
     articlesPage?: ArticlesPageSchema;
-    articleDetailsPage?: ArticleDetailsPageSchema;
 
     [rtkApi.reducerPath]: ReturnType<typeof rtkApi.reducer>;
 }

@@ -4,15 +4,11 @@ import { Action, ReducersMapObject } from '@reduxjs/toolkit';
 import { loginReducer } from '@/features/AuthByUserName';
 import { profileReducer } from '@/entities/Profile';
 import { articleDetailsReducer } from '@/entities/Article';
-import { addCommentFormReducer } from '@/features/AddCommentForm';
-import { articleDetailsPageReducer } from '@/pages/ArticleDetailsPage';
 
 const defaultAsyncReducers = {
     loginForm: loginReducer,
     profile: profileReducer,
     articleDetails: articleDetailsReducer,
-    addCommentForm: addCommentFormReducer,
-    articleDetailsPage: articleDetailsPageReducer,
 };
 
 export const StoreDecorator =
