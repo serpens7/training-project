@@ -9,6 +9,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Text } from '@/shared/ui/Text/Text';
 import { RoutePath } from '@/shared/const/router';
 import { AppLink, AppLinkTheme } from '@/shared/ui/AppLink/AppLink';
+import { Avatar } from '@/shared/ui/Avatar/Avatar';
+import { Dropdown } from '@/shared/ui/Dropdown';
+import { HStack } from '@/shared/ui/Stack';
 
 interface NavbarProps {
     className?: string;
@@ -48,13 +51,25 @@ export const Navbar = memo(({ className = '' }: NavbarProps) => {
                         {t('article.createArticle')}
                     </AppLink>
                     <div className={cls.rightSide}>
-                        <Text text={`${authData.username}`} />
-                        <Button
-                            theme={ButtonTheme.CLEAR_INVERTED}
-                            onClick={onLogout}
-                        >
-                            {t('navbar.exit')}
-                        </Button>
+                        <Dropdown
+                            direction='bottom'
+                            trigger={
+                                <HStack gap='8'>
+                                    <Avatar size={30} src={authData.avatar} />
+                                    <Text text={authData.username} />
+                                </HStack>
+                            }
+                            items={[
+                                {
+                                    content: t('Профиль'),
+                                    href: RoutePath.profile + authData.id,
+                                },
+                                {
+                                    content: t('navbar.exit'),
+                                    onClick: onLogout,
+                                },
+                            ]}
+                        />
                     </div>
                 </>
             ) : (
