@@ -4,25 +4,22 @@ import {
 } from '@/shared/lib/components/DynamicModuleLoader';
 import { classNames } from '@/shared/lib/classNames/classNames';
 import { ProfileCard } from '@/entities/Profile';
-import { useCallback } from 'react';
+import { useEffect } from 'react';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Text, TextTheme } from '@/shared/ui/Text/Text';
 import { Currency } from '@/entities/Currency';
 import { Country } from '@/entities/Country';
-import { useInitialEffect } from '@/shared/lib/hooks/useInitialEffect';
 import { VStack } from '@/shared/ui/Stack';
 import { EditableProfileCardHeader } from '../EditableProfileCardHeader/EditableProfileCardHeader';
 import { profileReducer, profileActions } from '../../model/slice/profileSlice';
 import {
-    getProfileError,
     getProfileForm,
-    getProfileIsLoading,
     getProfileReadonly,
     getProfileValidateErrors,
 } from '../../model/selectors/getProfile';
-import { fetchProfileData } from '../../model/services/fetchProfileData';
+import { useGetProfileQuery, useUpdateProfileMutation } from '../../api/profileApi';
 import { ValidateProfileError } from '../../model/types/editableProfileCardSchema';
 
 const reducers: ReducersList = {
@@ -39,10 +36,17 @@ export const EditableProfileCard = ({ className, id }: EditableProfileCardProps)
     const dispatch = useAppDispatch();
 
     const formData = useSelector(getProfileForm);
-    const isLoading = useSelector(getProfileIsLoading);
-    const error = useSelector(getProfileError);
     const readonly = useSelector(getProfileReadonly);
     const validateErrors = useSelector(getProfileValidateErrors);
+
+    const {
+        data,
+        isFetching,
+        isError: isFetchError,
+    } = useGetProfileQuery(id ?? '', { skip: !id });
+    const [, { isLoading: isUpdating }] = useUpdateProfileMutation({
+        fixedCacheKey: 'update-profile',
+    });
 
     const validateErrorTranslates = {
         [ValidateProfileError.SERVER_ERROR]: t('error.server'),
@@ -54,75 +58,51 @@ export const EditableProfileCard = ({ className, id }: EditableProfileCardProps)
         [ValidateProfileError.INCORRECT_AGE]: t('error.incorrectAge'),
     };
 
-    useInitialEffect(() => {
-        if (id) dispatch(fetchProfileData(id));
-    });
+    useEffect(() => {
+        if (data) dispatch(profileActions.initEditForm(data));
+    }, [data, dispatch]);
 
-    const onChangeFirstname = useCallback(
-        (value?: string) => {
-            dispatch(profileActions.updateProfile({ first: value || '' }));
-        },
-        [dispatch]
-    );
+    const onChangeFirstname = (value?: string) => {
+        dispatch(profileActions.updateProfile({ first: value || '' }));
+    };
 
-    const onChangeLastname = useCallback(
-        (value?: string) => {
-            dispatch(profileActions.updateProfile({ lastname: value || '' }));
-        },
-        [dispatch]
-    );
+    const onChangeLastname = (value?: string) => {
+        dispatch(profileActions.updateProfile({ lastname: value || '' }));
+    };
 
-    const onChangeCity = useCallback(
-        (value?: string) => {
-            dispatch(profileActions.updateProfile({ city: value || '' }));
-        },
-        [dispatch]
-    );
+    const onChangeCity = (value?: string) => {
+        dispatch(profileActions.updateProfile({ city: value || '' }));
+    };
 
-    const onChangeAge = useCallback(
-        (value?: string) => {
-            const age = Number(value);
+    const onChangeAge = (value?: string) => {
+        const age = Number(value);
 
-            if (Number.isNaN(age)) return;
-            if (age < 1 || age > 100) return;
+        if (Number.isNaN(age)) return;
+        if (age < 1 || age > 100) return;
 
-            dispatch(profileActions.updateProfile({ age }));
-        },
-        [dispatch]
-    );
+        dispatch(profileActions.updateProfile({ age }));
+    };
 
-    const onChangeUsername = useCallback(
-        (value?: string) => {
-            dispatch(profileActions.updateProfile({ username: value || '' }));
-        },
-        [dispatch]
-    );
+    const onChangeUsername = (value?: string) => {
+        dispatch(profileActions.updateProfile({ username: value || '' }));
+    };
 
-    const onChangeAvatar = useCallback(
-        (value?: string) => {
-            dispatch(profileActions.updateProfile({ avatar: value || '' }));
-        },
-        [dispatch]
-    );
+    const onChangeAvatar = (value?: string) => {
+        dispatch(profileActions.updateProfile({ avatar: value || '' }));
+    };
 
-    const onChangeCurrency = useCallback(
-        (currency: Currency) => {
-            dispatch(profileActions.updateProfile({ currency }));
-        },
-        [dispatch]
-    );
+    const onChangeCurrency = (currency: Currency) => {
+        dispatch(profileActions.updateProfile({ currency }));
+    };
 
-    const onChangeCountry = useCallback(
-        (country: Country) => {
-            dispatch(profileActions.updateProfile({ country }));
-        },
-        [dispatch]
-    );
+    const onChangeCountry = (country: Country) => {
+        dispatch(profileActions.updateProfile({ country }));
+    };
 
     return (
         <DynamicModuleLoader reducers={reducers} removeAfterUnmount>
             <VStack gap='16' max className={classNames('', {}, [className ?? ''])}>
-                <EditableProfileCardHeader />
+                <EditableProfileCardHeader id={id} />
                 {validateErrors?.length &&
                     validateErrors.map((err) => (
                         <Text
@@ -133,8 +113,8 @@ export const EditableProfileCard = ({ className, id }: EditableProfileCardProps)
                     ))}
                 <ProfileCard
                     data={formData}
-                    isLoading={isLoading}
-                    error={error}
+                    isLoading={isFetching || isUpdating}
+                    error={isFetchError ? 'error' : undefined}
                     readonly={readonly}
                     onChangeFirstname={onChangeFirstname}
                     onChangeLastname={onChangeLastname}

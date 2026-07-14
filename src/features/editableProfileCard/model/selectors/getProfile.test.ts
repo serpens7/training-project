@@ -1,31 +1,15 @@
 import { StateSchema } from "@/app/providers/StoreProvider";
 import { DeepPartial } from '@reduxjs/toolkit';
 import { ValidateProfileError } from "../types/editableProfileCardSchema";
-import { getProfileData, getProfileError, getProfileForm, getProfileIsLoading, getProfileReadonly, getProfileValidateErrors } from "./getProfile";
+import { getProfileData, getProfileForm, getProfileReadonly, getProfileValidateErrors } from "./getProfile";
 
 
 describe('profile selectors', () => {
-    test('getProfileIsLoading', () => {
-        const state: DeepPartial<StateSchema> = {
-            profile: { isLoading: true, readonly: false },
-        };
-
-        expect(getProfileIsLoading(state as StateSchema)).toBe(true);
-    });
-
-    test('getProfileError', () => {
-        const state: DeepPartial<StateSchema> = {
-            profile: { error: 'error', readonly: false, isLoading: false },
-        };
-
-        expect(getProfileError(state as StateSchema)).toBe('error');
-    });
-
     test('getProfileData', () => {
         const data = { username: 'admin' };
 
         const state: DeepPartial<StateSchema> = {
-            profile: { data, readonly: false, isLoading: false, error: 'error' },
+            profile: { data, readonly: false },
         };
 
         expect(getProfileData(state as StateSchema)).toEqual(data);
@@ -33,7 +17,7 @@ describe('profile selectors', () => {
 
     test('getProfileReadonly', () => {
         const state: DeepPartial<StateSchema> = {
-            profile: { readonly: true, isLoading: false, error: 'error' },
+            profile: { readonly: true },
         };
 
         expect(getProfileReadonly(state as StateSchema)).toBe(true);
@@ -43,7 +27,7 @@ describe('profile selectors', () => {
         const errors = [ValidateProfileError.SERVER_ERROR, ValidateProfileError.INCORRECT_USER_DATA];
 
         const state: DeepPartial<StateSchema> = {
-            profile: { validateErrors: errors, readonly: false, isLoading: false, error: 'error' },
+            profile: { validateErrors: errors, readonly: false },
         };
 
         expect(getProfileValidateErrors(state as StateSchema)).toEqual(errors);
@@ -53,7 +37,7 @@ describe('profile selectors', () => {
         const form = { username: 'admin' };
 
         const state: DeepPartial<StateSchema> = {
-            profile: { form, readonly: false, isLoading: false, error: 'error' },
+            profile: { form, readonly: false },
         };
 
         expect(getProfileForm(state as StateSchema)).toEqual(form);

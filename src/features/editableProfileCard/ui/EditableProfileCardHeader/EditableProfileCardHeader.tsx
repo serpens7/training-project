@@ -7,16 +7,19 @@ import { useCallback } from 'react';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { getUserAuthData } from '@/entities/User';
 import { HStack } from '@/shared/ui/Stack';
-import { getProfileData, getProfileReadonly } from '../../model/selectors/getProfile';
+import { getProfileData, getProfileForm, getProfileReadonly } from '../../model/selectors/getProfile';
 import { profileActions } from '../../model/slice/profileSlice';
-import { updateProfileData } from '../../model/services/updateProfileData';
+import { useUpdateProfileMutation } from '../../api/profileApi';
+import { validateProfileData } from '../../model/services/validateProfileData';
+import { ValidateProfileError } from '../../model/types/editableProfileCardSchema';
 
 interface EditableProfileCardHeaderProps {
     className?: string;
+    id?: string;
 }
 
 export const EditableProfileCardHeader = (props: EditableProfileCardHeaderProps) => {
-    const { className = '' } = props;
+    const { className = '', id } = props;
 
     const { t } = useTranslation();
 
@@ -25,7 +28,10 @@ export const EditableProfileCardHeader = (props: EditableProfileCardHeaderProps)
     const canEdit = authData?.id === profileData?.id;
 
     const readonly = useSelector(getProfileReadonly);
+    const formData = useSelector(getProfileForm);
     const dispatch = useAppDispatch();
+
+    const [updateProfile] = useUpdateProfileMutation({ fixedCacheKey: 'update-profile' });
 
     const onEdit = useCallback(() => {
         dispatch(profileActions.setReadonly(false));
@@ -35,9 +41,24 @@ export const EditableProfileCardHeader = (props: EditableProfileCardHeaderProps)
         dispatch(profileActions.cancelEdit());
     }, [dispatch]);
 
-    const onSave = useCallback(() => {
-        dispatch(updateProfileData());
-    }, [dispatch]);
+    const onSave = useCallback(async () => {
+        const errors = validateProfileData(formData);
+
+        if (errors.length) {
+            dispatch(profileActions.setValidateErrors(errors));
+            return;
+        }
+
+        if (!id || !formData) return;
+
+        try {
+            await updateProfile({ profileId: id, data: formData }).unwrap();
+            dispatch(profileActions.setReadonly(true));
+            dispatch(profileActions.setValidateErrors(undefined));
+        } catch (e) {
+            dispatch(profileActions.setValidateErrors([ValidateProfileError.SERVER_ERROR]));
+        }
+    }, [dispatch, formData, id, updateProfile]);
 
     return (
         <HStack max justify='between' className={classNames('', {}, [className])}>
