@@ -6,7 +6,7 @@ import { Button, ButtonTheme } from '@/shared/ui/Button/Button';
 import { LoginModal } from '@/features/AuthByUserName';
 import { getUserAuthData, userActions } from '@/entities/User';
 import { useDispatch, useSelector } from 'react-redux';
-import { Text } from '@/shared/ui/Text/Text';
+import { Text, TextTheme } from '@/shared/ui/Text/Text';
 import { RoutePath } from '@/shared/const/router';
 import { AppLink, AppLinkTheme } from '@/shared/ui/AppLink/AppLink';
 import { Avatar } from '@/shared/ui/Avatar/Avatar';
@@ -38,7 +38,7 @@ export const Navbar = memo(({ className = '' }: NavbarProps) => {
     return (
         <header className={classNames(cls.Navbar, {}, [className])}>
             <AppLink to={RoutePath.main} className={cls.appName}>
-                <Text title={t('IT-NEWS')} />
+                <Text title={t('IT-NEWS')} theme={TextTheme.INVERTED} />
             </AppLink>
 
             {authData ? (
@@ -56,7 +56,10 @@ export const Navbar = memo(({ className = '' }: NavbarProps) => {
                             trigger={
                                 <HStack gap='8'>
                                     <Avatar size={30} src={authData.avatar} />
-                                    <Text text={authData.username} />
+                                    <Text
+                                        text={authData.username}
+                                        theme={TextTheme.INVERTED}
+                                    />
                                 </HStack>
                             }
                             items={[
@@ -81,7 +84,10 @@ export const Navbar = memo(({ className = '' }: NavbarProps) => {
                         {t('navbar.login')}
                     </Button>
                     {isAuthModal && (
-                        <LoginModal isOpen={isAuthModal} onClose={onCloseModal} />
+                        <LoginModal
+                            isOpen={isAuthModal}
+                            onClose={onCloseModal}
+                        />
                     )}
                 </div>
             )}
