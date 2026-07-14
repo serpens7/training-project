@@ -88,7 +88,8 @@
         "webpack-dev-server": "^4.7.4"
     },
     "dependencies": {
-        "@reduxjs/toolkit": "^1.8.0",
+        "@headlessui/react": "^2.2.10",
+        "@reduxjs/toolkit": "^1.9.7",
         "axios": "^1.16.1",
         "concurrently": "^7.0.0",
         "i18next": "^23.16.8",

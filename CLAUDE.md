@@ -1,0 +1,147 @@
+# CLAUDE.md
+
+Guidance for working in this repo. Read this first, then dive into code.
+
+## What this is
+
+A production-style React SPA (based on the Ulbi TV "production project") built with
+**Feature-Sliced Design (FSD)**. Backend is a local **json-server** (`json-server/db.json`).
+Absolute imports use the `@/` alias → `src/` (webpack + tsconfig `paths`).
+
+## Tech stack (current, verified)
+
+| Area | Choice |
+|---|---|
+| UI | React **18.3** (`createRoot` in `src/index.tsx`) |
+| State | Redux Toolkit **1.9.7** (NOT v2) + react-redux **8.1.3** (redux 4) |
+| Server-state | **RTK Query** (`shared/api/rtkApi.ts`) — the modern path; coexists with thunks |
+| Router | react-router-dom **6.2** |
+| i18n | react-i18next **15** / i18next **23** |
+| TS | `typescript@^5.4` (resolves to 5.9); `moduleResolution: "bundler"` |
+| Build | webpack **5** (config in `config/build`, entry-agnostic) |
+| Stories | Storybook **8.6** (webpack5 + SWC compiler) |
+| Tests | jest **29** + `@swc/jest` + testing-library **14** |
+| HTTP | axios (`shared/api/api.ts`, `$api`) for thunks; `fetchBaseQuery` for RTK Query |
+| Virtualization | react-virtuoso (articles list) |
+| UI primitives | **@headlessui/react v2** (Dropdown, ListBox) |
+| FSD linter | **steiger** (`lint:fsd`) |
+
+## Commands (npm)
+
+- `npm run type:check` — `tsc --noEmit`
+- `npm run lint:ts` / `lint:ts:fix` — eslint (airbnb)
+- `npm run lint:scss` / `lint:scss:fix` — stylelint
+- `npm run lint:fsd` — steiger (FSD boundaries)
+- `npm run unit` — jest
+- `npm run build:prod` — production webpack build
+- `npm run storybook` / `build-storybook`
+- `npm run start:dev` — dev server + json-server (concurrently)
+
+**Before finishing any change, run the CI chain and keep it green** (this is exactly
+what `.github/workflows/main.yml` runs, on **node 24.x**):
+```
+type:check · lint:ts · lint:scss · lint:fsd · unit · build:prod · build-storybook
+```
+
+## FSD architecture
+
+Layers, top→bottom (each may import only from layers strictly below, via public API):
+```
+app → pages → widgets → features → entities → shared
+```
+
+Current slices:
+- **entities**: Article, Comment, Counter, Country, Currency, Profile, User
+- **features**: ArticleComments, AuthByUserName, articleRecommendationsList, LangSwitcher, ThemeSwitcher
+- **widgets**: Navbar, Page, PageError, PageLoader, Sidebar
+- **pages**: About, ArticleDetails, ArticleEdit, Articles, Main, NotFound, Profile
+- **shared/ui**: AppLink, Avatar, Button, Card, Code, Dropdown, Icon, Input, ListBox, Loader, Modal, PageLoader, Portal, Select, Skeleton, Stack (HStack/VStack), Tabs, Text
+- **app/providers**: ErrorBoundary, StoreProvider, ThemeProvider, router
+
+### Rules the codebase follows (enforced by steiger)
+1. **Public API via `index.ts`** — cross-slice imports go to the slice root
+   (`@/entities/Article`), never deep (`@/entities/Article/model/...`).
+   **Exception:** `shared/ui`/`shared/lib` have NO per-segment public API — deep
+   imports like `@/shared/ui/Button/Button` are the convention.
+2. **Same-slice imports are relative** (`../../model/...`), never via own `@/`-barrel.
+3. **Entity→entity cross-imports use the `@x` notation.** A provider exposes a
+   dedicated API for a consumer: `entities/Country/@x/Profile.ts`, imported as
+   `@/entities/Country/@x/Profile`. Existing: `User/@x/Article`, `User/@x/Comment`,
+   `Country/@x/Profile`, `Currency/@x/Profile`. (`@x` is just a folder name.)
+
+## Redux store (important, non-obvious)
+
+- Store is built with a **reducer manager** for lazy/async reducers
+  (`app/providers/StoreProvider/config/reducerManager.ts`). Slices are registered
+  at mount via **`DynamicModuleLoader`** (`shared/lib/components/DynamicModuleLoader`)
+  with a `ReducersList`, then removed on unmount.
+- **`StateSchema` / `ThunkConfig` live in `app`** (`StoreProvider/config/StateSchema.ts`)
+  and are imported "upward" by selectors/thunks in entities/features/pages. This is a
+  **known, accepted compromise** (the aggregate schema can't sit in shared without
+  pointing back at slices). steiger surfaces these as **warnings, not errors** — see
+  `steiger.config.ts`. Removing it fully would need Redux module augmentation.
+- Typed dispatch: **`useAppDispatch`** (`shared/lib/hooks/useAppDispatch`) for thunks;
+  plain `useDispatch` only for plain actions.
+
+## RTK Query (server-state — preferred direction)
+
+- Base API: `shared/api/rtkApi.ts` (`createApi` + `fetchBaseQuery`, `tagTypes: ['Comments']`).
+  Wired into the store (`api` reducer + middleware) and `StateSchema[rtkApi.reducerPath]`.
+- Each feature **injects its own endpoints** (`injectEndpoints`) in its `api/` segment,
+  e.g. `features/ArticleComments/api/articleCommentsApi.ts` (getComments query +
+  addComment mutation with tag invalidation → auto-refetch),
+  `features/articleRecommendationsList/api/articleRecommendationsApi.ts`.
+- **Two data-fetching paradigms coexist**: legacy `createAsyncThunk`+slice+entityAdapter
+  (Profile, Articles, Auth) and RTK Query (Comments, Recommendations). Direction of
+  travel = migrate server-state to RTK Query. When adding new fetching, prefer RTK Query.
+- Caveat: RTK Query uses `fetch`, thunks use axios `$api` — auth header logic is
+  duplicated in both. Fine for now; could unify with an `axiosBaseQuery`.
+
+## Conventions
+
+- **Styling**: CSS Modules `*.module.scss` + `classNames(cls.Root, mods, [extra])`
+  helper. Theme vars under `.app_light_theme` / `.app_dark_theme` (on `<body>` via
+  `useTheme`). Theme enum lives in `shared/const/theme`, `useTheme` in `shared/lib/hooks`.
+- **Routing consts**: `RoutePath`/`AppRoutes` in `shared/const/router`; the route→page
+  map (`routeConfig`) in `app/providers/router/routeConfig`.
+- **i18n**: all user-facing text via `t()`. `i18next/no-literal-string` is OFF for
+  `*.test.*` and `*.stories.*`.
+- **Stories**: SB8, CSF2 template pattern; types `Meta` / `StoryFn` from
+  `@storybook/react` (NOT the removed `ComponentMeta`/`ComponentStory`).
+
+## Gotchas learned the hard way
+
+- **CI runs on node 24.x** (set in `main.yml`). The lock was authored by npm 11; node
+  22 could fail `npm ci`. Keep node 24 to match.
+- **`moduleResolution: "bundler"`** is required — react-i18next 15 ships ESM (`.d.mts`)
+  types that `node10` can't resolve; the IDE (TS server) will flag them otherwise.
+- **`lint:scss` currently fails on a PRE-EXISTING issue** in
+  `src/app/styles/variables/global.scss` (`custom-property-empty-line-before`),
+  unrelated to feature work. Don't chase it as if you broke it.
+- **Storybook theme portals**: `@headlessui` `anchor` menus render in a `<body>` portal;
+  in Storybook `ThemeDecorator` puts the theme class on a `<div>`, so dropdown menus
+  render un-themed in SB (fine in the real app, where the class is on `<body>`).
+- **Windows + `core.autocrlf=true`**: editing via shell tools can produce LF/CRLF diff
+  noise; huge diffs are usually `package-lock.json`, not real churn.
+- **Do NOT `rm package-lock.json && npm install`** — it drifts transitive tool versions
+  (stylelint/eslint) and changes lint behavior. Use `npm ci` for clean reinstalls, and
+  targeted `npm install pkg@ver` for version changes.
+
+## Verification & workflow
+
+- After edits, prefer running only the affected checks first (type:check, eslint on
+  changed files, stylelint on changed scss), then the full chain before declaring done.
+- `type:check` is the source of truth for type errors and matches the IDE (bundler).
+- Do NOT commit/push unless asked. If on `main`, branch first. Current branch:
+  **`feat/headlessui`** (working branch for this stream of work).
+
+## Reference architecture example (Comments)
+
+Clean pattern to imitate:
+```
+entities/Comment         — CommentCard, CommentList, CommentForm (presentational), type
+features/ArticleComments — api/ (RTK Query) + ui/ (composes list + form for an article)
+pages/ArticleDetailsPage — just <ArticleComments id={id} />
+```
+Pages should be thin composition shells; page-specific UI (e.g. `ArticlesPageList`)
+connects to its own slice directly rather than prop-drilling from the page.

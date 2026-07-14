@@ -1,0 +1,46 @@
+.Dropdown {
+    display: inline-flex;
+}
+
+.btn {
+    padding: 0;
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Rendered in a portal via the `anchor` prop; only the panel is styled here. */
+.menu {
+    z-index: 1000;
+    min-width: 160px;
+    padding: 8px 0;
+    margin: 0;
+    background: var(--bg-color);
+    border: 1px solid var(--primary-color);
+    border-radius: 12px;
+    box-shadow: 4px 4px 12px var(--card-shadow);
+}
+
+.item {
+    display: flex;
+    width: 100%;
+    padding: 8px 16px;
+    font: inherit;
+    color: var(--primary-color);
+    text-align: left;
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.item[data-focus] {
+    color: var(--inverted-bg-color);
+    background: var(--inverted-primary-color);
+}
+
+.item[data-disabled] {
+    cursor: default;
+    opacity: 0.5;
+}

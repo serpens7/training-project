@@ -1,6 +1,7 @@
-import { HTMLAttributeAnchorTarget, memo } from 'react';
+import { memo, useCallback } from 'react';
 import { Virtuoso, VirtuosoGrid, ListRange } from 'react-virtuoso';
 import { useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { classNames } from '@/shared/lib/classNames/classNames';
 import {
     Article,
@@ -8,16 +9,18 @@ import {
     ArticleListItem,
     ArticleListItemSkeleton,
 } from '@/entities/Article';
+import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
+import {
+    getArticlesPageIsLoading,
+    getArticlesPageView,
+} from '../../model/selectors/articlesPageSelectors';
+import { getArticles } from '../../model/slices/articlePageSlice';
+import { fetchNextArticlesPage } from '../../model/services/fetchNextArticlesPage';
 import { ArticlesPageFilters } from '../ArticlesPageFilters/ArticlesPageFilters';
 import cls from './ArticlesPageList.module.scss';
 
 interface ArticlesPageListProps {
     className?: string;
-    articles: Article[];
-    view: ArticleView;
-    isLoading?: boolean;
-    target?: HTMLAttributeAnchorTarget;
-    onLoadNextPart: () => void;
 }
 
 interface ListContext {
@@ -56,15 +59,16 @@ const Footer = ({ context }: { context: ListContext }) => {
 };
 
 export const ArticlesPageList = memo((props: ArticlesPageListProps) => {
-    const {
-        className = '',
-        articles,
-        view,
-        isLoading,
-        target,
-        onLoadNextPart,
-    } = props;
+    const { className = '' } = props;
+    const dispatch = useAppDispatch();
+    const articles = useSelector(getArticles.selectAll);
+    const isLoading = useSelector(getArticlesPageIsLoading);
+    const view = useSelector(getArticlesPageView);
     const { pathname } = useLocation();
+
+    const onLoadNextPart = useCallback(() => {
+        dispatch(fetchNextArticlesPage());
+    }, [dispatch]);
 
     const context: ListContext = { isLoading, view };
     const initialTopMostItemIndex = savedTopIndexByPath[pathname] ?? 0;
@@ -78,7 +82,6 @@ export const ArticlesPageList = memo((props: ArticlesPageListProps) => {
         <ArticleListItem
             article={article}
             view={view}
-            target={target}
             className={view === ArticleView.BIG ? cls.bigCard : undefined}
         />
     );
