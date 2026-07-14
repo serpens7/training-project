@@ -2,7 +2,7 @@ import { StateSchema, StoreProvider } from '@/app/providers/StoreProvider';
 import { Decorator } from '@storybook/react';
 import { Action, ReducersMapObject } from '@reduxjs/toolkit';
 import { loginReducer } from '@/features/AuthByUserName';
-import { profileReducer } from '@/entities/Profile';
+import { profileReducer } from '@/features/editableProfileCard';
 import { articleDetailsReducer } from '@/entities/Article';
 
 const defaultAsyncReducers = {

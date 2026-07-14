@@ -1,7 +1,7 @@
 import { StateSchema } from "@/app/providers/StoreProvider";
-import { getProfileData, getProfileError, getProfileForm, getProfileIsLoading, getProfileReadonly, getProfileValidateErrors } from "./getProfile";
 import { DeepPartial } from '@reduxjs/toolkit';
-import { ValidateProfileError } from "../types/profile";
+import { ValidateProfileError } from "../types/editableProfileCardSchema";
+import { getProfileData, getProfileError, getProfileForm, getProfileIsLoading, getProfileReadonly, getProfileValidateErrors } from "./getProfile";
 
 
 describe('profile selectors', () => {

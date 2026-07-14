@@ -1,7 +1,7 @@
 import { ArticleDetailsSchema } from "@/entities/Article";
-import { ProfileSchema } from "@/entities/Profile";
 import { UserSchema } from "@/entities/User";
 import { LoginSchema } from "@/features/AuthByUserName";
+import { ProfileSchema } from "@/features/editableProfileCard";
 import { ArticlesPageSchema } from "@/pages/ArticlesPage";
 import { AnyAction, Dispatch, EnhancedStore, Reducer, ReducersMapObject } from "@reduxjs/toolkit";
 import { AxiosInstance } from "axios";
