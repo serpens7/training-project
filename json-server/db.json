@@ -1568,5 +1568,44 @@
       "username": "yain",
       "avatar": "https://xakep.ru/wp-content/uploads/2018/05/171485/KuroiSH-hacker.jpg"
     }
+  ],
+  "notifications": [
+    {
+      "id": "1",
+      "userId": "1",
+      "title": "Новая статья опубликована",
+      "description": "Посмотрите последнюю статью про React 19",
+      "href": "/articles/1",
+      "isViewed": false
+    },
+    {
+      "id": "2",
+      "userId": "1",
+      "title": "Новый комментарий",
+      "description": "Кто-то оставил комментарий к вашей статье",
+      "isViewed": false
+    },
+    {
+      "id": "3",
+      "userId": "1",
+      "title": "Профиль обновлён",
+      "description": "Изменения профиля успешно сохранены",
+      "isViewed": true
+    },
+    {
+      "id": "4",
+      "userId": "2",
+      "title": "Добро пожаловать",
+      "description": "Спасибо за регистрацию на IT-news",
+      "isViewed": false
+    },
+    {
+      "id": "5",
+      "userId": "2",
+      "title": "Рекомендуем статью",
+      "description": "Docker для разработчиков",
+      "href": "/articles/2",
+      "isViewed": true
+    }
   ]
 }

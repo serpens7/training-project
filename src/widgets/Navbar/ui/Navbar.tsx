@@ -12,6 +12,7 @@ import { AppLink, AppLinkTheme } from '@/shared/ui/AppLink/AppLink';
 import { Avatar } from '@/shared/ui/Avatar/Avatar';
 import { Dropdown } from '@/shared/ui/Dropdown';
 import { HStack } from '@/shared/ui/Stack';
+import { NotificationButton } from '@/features/NotificationButton';
 
 interface NavbarProps {
     className?: string;
@@ -54,6 +55,7 @@ export const Navbar = memo(({ className = '' }: NavbarProps) => {
                         </AppLink>
                     )}
                     <div className={cls.rightSide}>
+                        <NotificationButton />
                         <Dropdown
                             direction='bottom'
                             trigger={

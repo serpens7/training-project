@@ -14,6 +14,9 @@
   "forbidden": {
     "title": "Access denied"
   },
+  "notification": {
+    "empty": "No notifications"
+  },
   "error": {
     "occured": "An unexpected error occured",
     "reload": "Reload page",
