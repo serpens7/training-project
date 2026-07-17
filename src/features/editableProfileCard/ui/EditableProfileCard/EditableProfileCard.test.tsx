@@ -3,7 +3,6 @@ import { Profile } from '@/entities/Profile';
 import { Currency } from '@/entities/Currency';
 import { Country } from '@/entities/Country';
 import userEvent from '@testing-library/user-event';
-import { $api } from '@/shared/api/api';
 import { profileReducer } from '../../model/slice/profileSlice';
 import { EditableProfileCard } from './EditableProfileCard';
 import { componentRender } from '@/shared/lib/tests/componentRender';
@@ -35,7 +34,24 @@ const options = {
     },
 };
 
+// RTK Query's fetchBaseQuery reads global fetch; stub it so the initial
+// getProfile query resolves instead of hitting the network.
+const mockFetchOk = () =>
+    jest.fn((_input: unknown, init?: RequestInit) => {
+        const body = init?.method === 'PUT' && init.body ? init.body : JSON.stringify(profile);
+        return Promise.resolve(
+            new Response(body, {
+                status: 200,
+                headers: { 'content-type': 'application/json' },
+            })
+        );
+    }) as jest.Mock;
+
 describe('features/EditableProfileCard', () => {
+    beforeEach(() => {
+        global.fetch = mockFetchOk();
+    });
+
     test('Readonly should switch', async () => {
         componentRender(<EditableProfileCard id='1' />, options);
         await userEvent.click(
@@ -95,7 +111,6 @@ describe('features/EditableProfileCard', () => {
     });
 
     test('If there are no validation errors, a PUT request should be sent to the server', async () => {
-        const mockPutReq = jest.spyOn($api, 'put');
         componentRender(<EditableProfileCard id='1' />, options);
         await userEvent.click(
             screen.getByTestId('EditableProfileCardHeader.EditButton')
@@ -110,6 +125,9 @@ describe('features/EditableProfileCard', () => {
             screen.getByTestId('EditableProfileCardHeader.SaveButton')
         );
 
-        expect(mockPutReq).toHaveBeenCalled();
+        const putCall = (global.fetch as jest.Mock).mock.calls.find(
+            ([request]) => (request as Request).method === 'PUT'
+        );
+        expect(putCall).toBeDefined();
     });
 });
