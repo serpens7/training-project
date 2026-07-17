@@ -11,6 +11,9 @@
   "notFound": {
     "title": "Page not found"
   },
+  "forbidden": {
+    "title": "Access denied"
+  },
   "error": {
     "occured": "An unexpected error occured",
     "reload": "Reload page",

@@ -1,11 +1,13 @@
 import { AboutPage } from '@/pages/AboutPage';
 import { MainPage } from '@/pages/MainPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
+import { ForbiddenPage } from '@/pages/ForbiddenPage';
 import { ProfilePage } from '@/pages/ProfilePage';
 import { ArticlesPage } from '@/pages/ArticlesPage';
 import { ArticleDetailsPage } from '@/pages/ArticleDetailsPage';
 import { ArticleEditPage } from '@/pages/ArticleEditPage';
 import { AppRoutes, AppRouteProps, RoutePath } from '@/shared/const/router';
+import { UserRole } from '@/entities/User';
 
 export const routeConfig: Record<AppRoutes, AppRouteProps> = {
     [AppRoutes.MAIN]: {
@@ -26,6 +28,10 @@ export const routeConfig: Record<AppRoutes, AppRouteProps> = {
         path: RoutePath.not_found,
         element: <NotFoundPage />,
     },
+    [AppRoutes.FORBIDDEN]: {
+        path: RoutePath.forbidden,
+        element: <ForbiddenPage />,
+    },
     [AppRoutes.ARTICLES]: {
         path: RoutePath.articles,
         element: <ArticlesPage />,
@@ -40,10 +46,12 @@ export const routeConfig: Record<AppRoutes, AppRouteProps> = {
         path: RoutePath.article_create,
         element: <ArticleEditPage />,
         authOnly: true,
+        roles: [UserRole.ADMIN],
     },
     [AppRoutes.ARTICLE_EDIT]: {
         path: `${RoutePath.article_edit}`,
         element: <ArticleEditPage />,
         authOnly: true,
+        roles: [UserRole.ADMIN],
     },
 };

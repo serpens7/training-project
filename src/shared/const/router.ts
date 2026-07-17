@@ -1,9 +1,11 @@
 import { RouteProps } from 'react-router-dom';
+import { UserRole } from '@/shared/const/rbac';
 
 export enum AppRoutes {
     MAIN = 'main',
     ABOUT = 'about',
     NOT_FOUND = 'not_found',
+    FORBIDDEN = 'forbidden',
     PROFILE = 'profile',
     ARTICLE_DETAILS = 'article_details',
     ARTICLE_CREATE = 'article_create',
@@ -13,12 +15,14 @@ export enum AppRoutes {
 
 export type AppRouteProps = RouteProps & {
     authOnly?: boolean;
+    roles?: UserRole[];
 };
 
 export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.MAIN]: '/',
     [AppRoutes.ABOUT]: '/about',
     [AppRoutes.NOT_FOUND]: '*',
+    [AppRoutes.FORBIDDEN]: '/forbidden',
     [AppRoutes.PROFILE]: '/profile/',
     [AppRoutes.ARTICLES]: '/articles',
     [AppRoutes.ARTICLE_DETAILS]: '/articles/',
