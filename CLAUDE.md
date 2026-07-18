@@ -18,12 +18,13 @@ Absolute imports use the `@/` alias → `src/` (webpack + tsconfig `paths`).
 | Router | react-router-dom **6.2** |
 | i18n | react-i18next **15** / i18next **23** |
 | TS | `typescript@^5.4` (resolves to 5.9); `moduleResolution: "bundler"` |
-| Build | webpack **5** (config in `config/build`, entry-agnostic) |
+| Build | webpack **5** (config in `config/build`); **swc-loader** transpiles (not ts-loader), dev filesystem cache |
 | Stories | Storybook **8.6** (webpack5 + SWC compiler) |
-| Tests | jest **29** + `@swc/jest` + testing-library **14** |
+| Tests | jest **29** + `@swc/jest` + testing-library **14** (+ `undici` fetch polyfill for RTK Query) |
 | HTTP | axios (`shared/api/api.ts`, `$api`) for thunks; `fetchBaseQuery` for RTK Query |
 | Virtualization | react-virtuoso (articles list) |
-| UI primitives | **@headlessui/react v2** (Dropdown, ListBox) |
+| Responsive | **react-device-detect** (`BrowserView`/`MobileView`) — e.g. Popover vs Drawer |
+| UI primitives | **@headlessui/react v2** (Dropdown, ListBox, Popover) |
 | FSD linter | **steiger** (`lint:fsd`) |
 
 ## Commands (npm)
@@ -51,11 +52,11 @@ app → pages → widgets → features → entities → shared
 ```
 
 Current slices:
-- **entities**: Article, Comment, Counter, Country, Currency, Profile, User
-- **features**: ArticleComments, AuthByUserName, articleRecommendationsList, LangSwitcher, ThemeSwitcher
+- **entities**: Article, Comment, Counter, Country, Currency, Notification, Profile, User
+- **features**: ArticleComments, AuthByUserName, articleRecommendationsList, editableProfileCard, LangSwitcher, NotificationButton, ThemeSwitcher
 - **widgets**: Navbar, Page, PageError, PageLoader, Sidebar
-- **pages**: About, ArticleDetails, ArticleEdit, Articles, Main, NotFound, Profile
-- **shared/ui**: AppLink, Avatar, Button, Card, Code, Dropdown, Icon, Input, ListBox, Loader, Modal, PageLoader, Portal, Select, Skeleton, Stack (HStack/VStack), Tabs, Text
+- **pages**: About, ArticleDetails, ArticleEdit, Articles, Forbidden, Main, NotFound, Profile
+- **shared/ui**: AppLink, Avatar, Button, Card, Code, Drawer, Dropdown, Icon, Input, ListBox, Loader, Modal, PageLoader, Popover, Portal, Select, Skeleton, Stack (HStack/VStack), Tabs, Text
 - **app/providers**: ErrorBoundary, StoreProvider, ThemeProvider, router
 
 ### Rules the codebase follows (enforced by steiger)
@@ -85,17 +86,36 @@ Current slices:
 
 ## RTK Query (server-state — preferred direction)
 
-- Base API: `shared/api/rtkApi.ts` (`createApi` + `fetchBaseQuery`, `tagTypes: ['Comments']`).
+- Base API: `shared/api/rtkApi.ts` (`createApi` + `fetchBaseQuery`, `tagTypes: ['Comments', 'Profile']`).
   Wired into the store (`api` reducer + middleware) and `StateSchema[rtkApi.reducerPath]`.
-- Each feature **injects its own endpoints** (`injectEndpoints`) in its `api/` segment,
-  e.g. `features/ArticleComments/api/articleCommentsApi.ts` (getComments query +
-  addComment mutation with tag invalidation → auto-refetch),
-  `features/articleRecommendationsList/api/articleRecommendationsApi.ts`.
+- Endpoints are injected (`injectEndpoints`) in an `api/` segment — usually in the feature
+  (`features/ArticleComments/api/articleCommentsApi.ts`,
+  `features/editableProfileCard/api/profileApi.ts`), or in the entity when the query just
+  fetches that entity's own data (`entities/Notification/api/notificationApi.ts`).
+  Hooks are re-exported under renamed constants; `tagTypes` stay centralized in `rtkApi`.
 - **Two data-fetching paradigms coexist**: legacy `createAsyncThunk`+slice+entityAdapter
-  (Profile, Articles, Auth) and RTK Query (Comments, Recommendations). Direction of
-  travel = migrate server-state to RTK Query. When adding new fetching, prefer RTK Query.
+  (**Articles, Auth**) and RTK Query (Comments, Recommendations, **Profile**, Notifications).
+  Direction of travel = migrate server-state to RTK Query. **Profile is already migrated**:
+  `editableProfileCard` fetches/updates via `profileApi` (RTK Query); its slice now holds
+  only client-side edit state (readonly, form draft, validate errors). When adding new
+  fetching, prefer RTK Query.
 - Caveat: RTK Query uses `fetch`, thunks use axios `$api` — auth header logic is
   duplicated in both. Fine for now; could unify with an `axiosBaseQuery`.
+
+## Access control (roles)
+
+- **`UserRole`** enum lives in `shared/const/rbac.ts` and is re-exported from
+  `entities/User` (kept in `shared` so `shared/const/router` can reference it without a
+  forbidden `shared → entities` import). `User.roles?: UserRole[]` comes straight from
+  `/login` (json-server `users` carry a `roles` array).
+- **Route gating**: `AppRouteProps` has an optional `roles?: UserRole[]`; `RequireAuth`
+  (`app/providers/router/ui/RequireAuth`) checks auth **and** role intersection — a
+  role mismatch redirects to **`ForbiddenPage`** (`/forbidden`), missing auth redirects to
+  main. `AppRouter` passes `route.roles` through.
+- **What's gated**: article create/edit routes require `UserRole.ADMIN`. The Navbar hides
+  the "create article" link via `isUserAdmin`, and `getCanEditArticle`
+  (`pages/ArticleDetailsPage/model/selectors/article.ts`) checks the admin role.
+- Role selectors: `getUserRoles`, `isUserAdmin`, `isUserManager` (`entities/User`).
 
 ## Conventions
 
@@ -115,9 +135,17 @@ Current slices:
   22 could fail `npm ci`. Keep node 24 to match.
 - **`moduleResolution: "bundler"`** is required — react-i18next 15 ships ESM (`.d.mts`)
   types that `node10` can't resolve; the IDE (TS server) will flag them otherwise.
-- **`lint:scss` currently fails on a PRE-EXISTING issue** in
-  `src/app/styles/variables/global.scss` (`custom-property-empty-line-before`),
-  unrelated to feature work. Don't chase it as if you broke it.
+- **RTK Query component tests need a `fetch` polyfill.** jsdom has no Fetch API, so
+  `fetchBaseQuery` can't even import under jest. `config/jest/jestSetup.ts` polyfills
+  `TextEncoder`/`ReadableStream`/`Headers`/`Request`/`Response` (via `undici`), and the
+  jest `__API__` global is an **absolute** URL (`undici`'s `Request` rejects relative URLs
+  even when `fetch` is mocked). In tests, mock `global.fetch` per-test rather than hitting
+  the network (see `editableProfileCard/ui/EditableProfileCard/EditableProfileCard.test.tsx`).
+- **`componentRender`** (`shared/lib/tests`) accepts `asyncReducers` — pass it when the
+  component under test registers a lazy slice via `DynamicModuleLoader`.
+- **`Modal` and `Drawer` share `useModal`** (`shared/lib/hooks/useModal`): open/close
+  state, animation timer, Escape handling. `Drawer` adds a pointer-based swipe-to-dismiss
+  on its grab handle (no animation libs — plain CSS `transform` + Pointer Events).
 - **Storybook theme portals**: `@headlessui` `anchor` menus render in a `<body>` portal;
   in Storybook `ThemeDecorator` puts the theme class on a `<div>`, so dropdown menus
   render un-themed in SB (fine in the real app, where the class is on `<body>`).
