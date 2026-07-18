@@ -134,6 +134,10 @@ Current slices:
 - `type:check` is the source of truth for type errors and matches the IDE (bundler).
 - Do NOT commit/push unless asked. If on `main`, branch first. Current branch:
   **`feat/headlessui`** (working branch for this stream of work).
+- Do NOT manually verify in the browser (Chrome MCP: navigate, screenshot, click through
+  flows, check console/network) by default. Running the CI chain (type:check, lint, unit,
+  build) is enough to call a change done. Only do live browser verification when the user
+  explicitly asks for it.
 
 ## Reference architecture example (Comments)
 
