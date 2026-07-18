@@ -20,6 +20,7 @@ Primary.args = {
         title: 'Новая статья опубликована',
         description: 'Посмотрите последнюю статью про React 19',
         href: '/articles/1',
+        isViewed: false,
     },
 };
 
@@ -29,6 +30,17 @@ WithoutLink.args = {
         id: '2',
         title: 'Системное уведомление',
         description: 'Профиль успешно обновлён',
+        isViewed: false,
+    },
+};
+
+export const Read = Template.bind({});
+Read.args = {
+    notification: {
+        id: '3',
+        title: 'Прочитанное уведомление',
+        description: 'У этой карточки нет индикатора',
+        isViewed: true,
     },
 };
 

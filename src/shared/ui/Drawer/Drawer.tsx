@@ -1,11 +1,6 @@
 import { classNames, Mods } from '@/shared/lib/classNames/classNames';
-import React, {
-    ReactNode,
-    useCallback,
-    useEffect,
-    useRef,
-    useState,
-} from 'react';
+import React, { CSSProperties, ReactNode, useRef, useState } from 'react';
+import { useModal } from '@/shared/lib/hooks/useModal';
 import cls from './Drawer.module.scss';
 import { Portal } from '../Portal/Portal';
 
@@ -18,52 +13,48 @@ interface DrawerProps {
 }
 
 const ANIMATION_DELAY = 300;
+const DISMISS_THRESHOLD = 100;
 
 export const Drawer = (props: DrawerProps) => {
     const { className = '', children, isOpen, onClose, lazy } = props;
-    const [isClosing, setIsClosing] = useState(false);
-    const [isMounted, setIsMounted] = useState(false);
-    const timerRef = useRef<ReturnType<typeof setTimeout>>();
 
-    useEffect(() => {
-        if (isOpen) {
-            setIsMounted(true);
-        }
-    }, [isOpen]);
+    const { isClosing, isMounted, close } = useModal({
+        onClose,
+        isOpen,
+        animationDelay: ANIMATION_DELAY,
+    });
 
-    const closeHandler = useCallback(() => {
-        if (onClose) {
-            setIsClosing(true);
-            timerRef.current = setTimeout(() => {
-                onClose();
-                setIsClosing(false);
-            }, ANIMATION_DELAY);
-        }
-    }, [onClose]);
-
-    const onKeyDown = useCallback(
-        (e: KeyboardEvent) => {
-            if (e.key === 'Escape') {
-                closeHandler();
-            }
-        },
-        [closeHandler]
-    );
+    const [isDragging, setIsDragging] = useState(false);
+    const [dragY, setDragY] = useState(0);
+    const startYRef = useRef(0);
 
     const onContentClick = (e: React.MouseEvent) => {
         e.stopPropagation();
     };
 
-    useEffect(() => {
-        if (isOpen) {
-            window.addEventListener('keydown', onKeyDown);
-        }
+    const onDragStart = (e: React.PointerEvent) => {
+        startYRef.current = e.clientY;
+        setIsDragging(true);
+        e.currentTarget.setPointerCapture(e.pointerId);
+    };
 
-        return () => {
-            clearTimeout(timerRef.current);
-            window.removeEventListener('keydown', onKeyDown);
-        };
-    }, [isOpen, onKeyDown]);
+    const onDragMove = (e: React.PointerEvent) => {
+        if (!isDragging) return;
+        setDragY(Math.max(0, e.clientY - startYRef.current));
+    };
+
+    const onDragEnd = () => {
+        if (!isDragging) return;
+        setIsDragging(false);
+        if (dragY > DISMISS_THRESHOLD) {
+            close();
+        }
+        setDragY(0);
+    };
+
+    const contentStyle: CSSProperties | undefined = isDragging
+        ? { transform: `translateY(${dragY}px)`, transition: 'none' }
+        : undefined;
 
     const mods: Mods = {
         [cls.opened]: isOpen,
@@ -77,8 +68,19 @@ export const Drawer = (props: DrawerProps) => {
     return (
         <Portal>
             <div className={classNames(cls.Drawer, mods, [className])}>
-                <div className={cls.overlay} onClick={closeHandler}>
-                    <div className={cls.content} onClick={onContentClick}>
+                <div className={cls.overlay} onClick={close}>
+                    <div
+                        className={cls.content}
+                        style={contentStyle}
+                        onClick={onContentClick}
+                    >
+                        <div
+                            className={cls.handle}
+                            onPointerDown={onDragStart}
+                            onPointerMove={onDragMove}
+                            onPointerUp={onDragEnd}
+                            onPointerCancel={onDragEnd}
+                        />
                         {children}
                     </div>
                 </div>

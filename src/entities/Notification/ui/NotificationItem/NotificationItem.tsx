@@ -18,43 +18,41 @@ export const NotificationItem = (props: NotificationItemProps) => {
 
     if (isLoading) {
         return (
-            <div
-                className={classNames(cls.NotificationItem, {}, [
-                    className,
-                    cls.loading,
-                ])}
-            >
-                <Skeleton height={16} width='60%' className={cls.title} />
-                <Skeleton width='100%' height={30} />
-            </div>
+            <Card className={classNames(cls.NotificationItem, {}, [className])}>
+                <VStack gap='4' max>
+                    <Skeleton height={16} width='60%' />
+                    <Skeleton width='100%' height={30} />
+                </VStack>
+            </Card>
         );
     }
 
     if (!notification) return null;
 
+    const isUnread = !notification.isViewed;
+
     const content = (
-        <VStack gap='4' max>
-            <Text className={cls.title} title={notification.title} />
-            {notification.description && (
-                <Text text={notification.description} />
-            )}
-        </VStack>
+        <Card
+            className={classNames(cls.NotificationItem, { [cls.unread]: isUnread }, [
+                className,
+            ])}
+        >
+            <VStack gap='4' max>
+                <Text className={cls.title} title={notification.title} />
+                {notification.description && (
+                    <Text text={notification.description} />
+                )}
+            </VStack>
+        </Card>
     );
 
     if (notification.href) {
         return (
-            <AppLink
-                to={notification.href}
-                className={classNames(cls.NotificationItem, {}, [className])}
-            >
+            <AppLink to={notification.href} className={cls.link}>
                 {content}
             </AppLink>
         );
     }
 
-    return (
-        <Card className={classNames(cls.NotificationItem, {}, [className])}>
-            {content}
-        </Card>
-    );
+    return content;
 };

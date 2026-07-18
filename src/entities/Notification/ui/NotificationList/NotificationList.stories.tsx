@@ -16,11 +16,17 @@ const Template: StoryFn<typeof NotificationList> = (args) => (
 export const Normal = Template.bind({});
 Normal.args = {
     items: [
-        { id: '1', title: 'Новая статья опубликована', href: '/articles/1' },
+        {
+            id: '1',
+            title: 'Новая статья опубликована',
+            href: '/articles/1',
+            isViewed: false,
+        },
         {
             id: '2',
             title: 'Комментарий к вашей статье',
             description: 'Кто-то оставил комментарий',
+            isViewed: true,
         },
     ],
 };

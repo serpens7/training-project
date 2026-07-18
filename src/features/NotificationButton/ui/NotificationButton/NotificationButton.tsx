@@ -26,19 +26,10 @@ export const NotificationButton = (props: NotificationButtonProps) => {
         skip: !authData?.id,
     });
 
-    const unviewedCount = items?.filter((item) => !item.isViewed).length ?? 0;
-
     const onOpenDrawer = () => setIsDrawerOpen(true);
     const onCloseDrawer = () => setIsDrawerOpen(false);
 
-    const trigger = (
-        <span className={cls.iconWrapper}>
-            <Icon Svg={NotificationIcon} className={cls.icon} />
-            {unviewedCount > 0 && (
-                <span className={cls.badge}>{unviewedCount}</span>
-            )}
-        </span>
-    );
+    const trigger = <Icon Svg={NotificationIcon} className={cls.icon} />;
 
     return (
         <div className={classNames(cls.NotificationButton, {}, [className])}>

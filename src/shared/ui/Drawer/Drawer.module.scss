@@ -30,6 +30,17 @@
     transform: translateY(100%);
 }
 
+.handle {
+    width: 40px;
+    height: 4px;
+    margin: 0 auto 12px;
+    border-radius: 2px;
+    background: var(--primary-color);
+    opacity: 0.3;
+    touch-action: none;
+    cursor: grab;
+}
+
 .opened {
     pointer-events: auto;
     opacity: 1;
