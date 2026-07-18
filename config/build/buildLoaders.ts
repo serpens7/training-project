@@ -49,6 +49,9 @@ export function buildLoaders({ isDev }: BuildOptions): webpack.RuleSetRule[] {
                             // Matches tsconfig jsx: react-jsx
                             runtime: 'automatic',
                             development: isDev,
+                            // Paired with ReactRefreshWebpackPlugin (buildPlugins.ts):
+                            // component state survives edits instead of remounting.
+                            refresh: isDev,
                         },
                     },
                 },

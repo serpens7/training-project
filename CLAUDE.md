@@ -18,11 +18,11 @@ Absolute imports use the `@/` alias → `src/` (webpack + tsconfig `paths`).
 | Router | react-router-dom **6.2** |
 | i18n | react-i18next **15** / i18next **23** |
 | TS | `typescript@^5.4` (resolves to 5.9); `moduleResolution: "bundler"` |
-| Build | webpack **5** (config in `config/build`); **swc-loader** transpiles (not ts-loader), dev filesystem cache |
+| Build | webpack **5** (config in `config/build`); **swc-loader** transpiles (not ts-loader), dev filesystem cache + React Fast Refresh, prod `splitChunks` vendor chunk |
 | Stories | Storybook **8.6** (webpack5 + SWC compiler) |
-| Tests | jest **29** + `@swc/jest` + testing-library **14** (+ `undici` fetch polyfill for RTK Query) |
-| HTTP | axios (`shared/api/api.ts`, `$api`) for thunks; `fetchBaseQuery` for RTK Query |
-| Virtualization | react-virtuoso (articles list) |
+| Tests | jest **29** + `@swc/jest` + testing-library **14** |
+| HTTP | **axios `$api`** (`shared/api/api.ts`) for both thunks and RTK Query — `rtkApi.ts` uses `axiosBaseQuery` (`shared/api/axiosBaseQuery.ts`), not `fetchBaseQuery`, so the auth interceptor lives in one place |
+| Virtualization | react-virtuoso (articles list; already inside a lazy page chunk) |
 | Responsive | **react-device-detect** (`BrowserView`/`MobileView`) — e.g. Popover vs Drawer |
 | UI primitives | **@headlessui/react v2** (Dropdown, ListBox, Popover) |
 | FSD linter | **steiger** (`lint:fsd`) |
@@ -86,8 +86,12 @@ Current slices:
 
 ## RTK Query (server-state — preferred direction)
 
-- Base API: `shared/api/rtkApi.ts` (`createApi` + `fetchBaseQuery`, `tagTypes: ['Comments', 'Profile']`).
+- Base API: `shared/api/rtkApi.ts` (`createApi` + `axiosBaseQuery()`, `tagTypes: ['Comments', 'Profile']`).
   Wired into the store (`api` reducer + middleware) and `StateSchema[rtkApi.reducerPath]`.
+  `axiosBaseQuery` (`shared/api/axiosBaseQuery.ts`) delegates to `$api.request(...)` (call
+  `.request` explicitly, not `$api(...)` — the callable instance is a separate bound
+  function from `.request`, so tests spying on `$api.request` wouldn't see calls made
+  through the bare callable).
 - Endpoints are injected (`injectEndpoints`) in an `api/` segment — usually in the feature
   (`features/ArticleComments/api/articleCommentsApi.ts`,
   `features/editableProfileCard/api/profileApi.ts`), or in the entity when the query just
@@ -99,8 +103,8 @@ Current slices:
   `editableProfileCard` fetches/updates via `profileApi` (RTK Query); its slice now holds
   only client-side edit state (readonly, form draft, validate errors). When adding new
   fetching, prefer RTK Query.
-- Caveat: RTK Query uses `fetch`, thunks use axios `$api` — auth header logic is
-  duplicated in both. Fine for now; could unify with an `axiosBaseQuery`.
+- Auth header is set once, by `$api`'s request interceptor (`shared/api/api.ts`) — both
+  thunks and RTK Query endpoints go through it. No separate `prepareHeaders` to keep in sync.
 
 ## Access control (roles)
 
@@ -135,17 +139,25 @@ Current slices:
   22 could fail `npm ci`. Keep node 24 to match.
 - **`moduleResolution: "bundler"`** is required — react-i18next 15 ships ESM (`.d.mts`)
   types that `node10` can't resolve; the IDE (TS server) will flag them otherwise.
-- **RTK Query component tests need a `fetch` polyfill.** jsdom has no Fetch API, so
-  `fetchBaseQuery` can't even import under jest. `config/jest/jestSetup.ts` polyfills
-  `TextEncoder`/`ReadableStream`/`Headers`/`Request`/`Response` (via `undici`), and the
-  jest `__API__` global is an **absolute** URL (`undici`'s `Request` rejects relative URLs
-  even when `fetch` is mocked). In tests, mock `global.fetch` per-test rather than hitting
-  the network (see `editableProfileCard/ui/EditableProfileCard/EditableProfileCard.test.tsx`).
+- **RTK Query component tests mock `$api.request`**, not `fetch` — `rtkApi` runs on
+  `axiosBaseQuery`, which calls `$api.request(...)`. `jest.spyOn($api, 'request')
+  .mockImplementation(...)` and resolve an axios-shaped response (`{ data, status,
+  statusText, headers, config }`); see `EditableProfileCard.test.tsx` /
+  `NotificationButton.test.tsx`. Because `axiosBaseQuery` fires the query async
+  (on mount / on interaction), assertions on call count often need `waitFor(...)`.
 - **`componentRender`** (`shared/lib/tests`) accepts `asyncReducers` — pass it when the
   component under test registers a lazy slice via `DynamicModuleLoader`.
 - **`Modal` and `Drawer` share `useModal`** (`shared/lib/hooks/useModal`): open/close
   state, animation timer, Escape handling. `Drawer` adds a pointer-based swipe-to-dismiss
   on its grab handle (no animation libs — plain CSS `transform` + Pointer Events).
+- **jsdom has no `PointerEvent`.** `fireEvent.pointer*` silently falls back to a plain
+  `Event` and drops `clientY`/`clientX`. Tests exercising pointer drag (see
+  `Drawer.test.tsx`) alias `window.PointerEvent = MouseEvent` and stub
+  `Element.prototype.setPointerCapture` before rendering.
+- **`Popover` exposes `onOpenChange`** via an internal render-prop watcher (headlessui's
+  `open` state is only available inside `<HeadlessPopover>`'s children-as-function scope).
+  `NotificationButton` uses it to only set `pollingInterval` while the panel is actually
+  open/visible (Popover or Drawer), instead of polling forever once mounted.
 - **Storybook theme portals**: `@headlessui` `anchor` menus render in a `<body>` portal;
   in Storybook `ThemeDecorator` puts the theme class on a `<div>`, so dropdown menus
   render un-themed in SB (fine in the real app, where the class is on `<body>`).

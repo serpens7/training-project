@@ -18,7 +18,10 @@ export function componentRender(
 ) {
     const { route = '/', initialState, asyncReducers } = options;
     return render(
-        <MemoryRouter initialEntries={[route]}>
+        <MemoryRouter
+            initialEntries={[route]}
+            future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+        >
             <StoreProvider initialState={initialState} asyncReducers={asyncReducers}>
                 <I18nextProvider i18n={i18nForTests}>
                     {component}

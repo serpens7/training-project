@@ -1,5 +1,7 @@
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { AxiosRequestConfig } from 'axios';
+import { $api } from '@/shared/api/api';
 import { componentRender } from '@/shared/lib/tests/componentRender';
 import { NotificationButton } from './NotificationButton';
 
@@ -8,21 +10,19 @@ const notifications = [
     { id: '2', title: 'New comment', userId: '1' },
 ];
 
-// RTK Query's fetchBaseQuery reads global fetch; stub it so getNotifications
-// resolves instead of hitting the network.
-const mockFetchOk = () =>
-    jest.fn(() =>
-        Promise.resolve(
-            new Response(JSON.stringify(notifications), {
-                status: 200,
-                headers: { 'content-type': 'application/json' },
-            })
-        )
-    ) as jest.Mock;
-
 describe('NotificationButton', () => {
     beforeEach(() => {
-        global.fetch = mockFetchOk();
+        // RTK Query's axiosBaseQuery calls $api.request(); stub it so
+        // getNotifications resolves instead of hitting the network.
+        jest.spyOn($api, 'request').mockImplementation(
+            async (config: AxiosRequestConfig) => ({
+                data: notifications,
+                status: 200,
+                statusText: 'OK',
+                headers: {},
+                config: config as never,
+            })
+        );
     });
 
     test('does not fetch notifications when there is no authenticated user', () => {
@@ -30,7 +30,7 @@ describe('NotificationButton', () => {
             initialState: { user: { inited: true } },
         });
 
-        expect(global.fetch).not.toHaveBeenCalled();
+        expect($api.request).not.toHaveBeenCalled();
     });
 
     test('fetches notifications for the current user when authenticated', async () => {
@@ -43,11 +43,11 @@ describe('NotificationButton', () => {
             },
         });
 
-        await waitFor(() => expect(global.fetch).toHaveBeenCalledTimes(1));
+        await waitFor(() => expect($api.request).toHaveBeenCalledTimes(1));
 
-        const [request] = (global.fetch as jest.Mock).mock.calls[0];
-        expect((request as Request).url).toContain('/notifications');
-        expect((request as Request).url).toContain('userId=1');
+        const [config] = ($api.request as jest.Mock).mock.calls[0];
+        expect(config.url).toBe('/notifications');
+        expect(config.params).toEqual({ userId: '1' });
     });
 
     test('clicking the bell reveals the notification list', async () => {

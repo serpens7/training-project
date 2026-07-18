@@ -3,6 +3,8 @@ import { Profile } from '@/entities/Profile';
 import { Currency } from '@/entities/Currency';
 import { Country } from '@/entities/Country';
 import userEvent from '@testing-library/user-event';
+import { AxiosRequestConfig } from 'axios';
+import { $api } from '@/shared/api/api';
 import { profileReducer } from '../../model/slice/profileSlice';
 import { EditableProfileCard } from './EditableProfileCard';
 import { componentRender } from '@/shared/lib/tests/componentRender';
@@ -34,22 +36,19 @@ const options = {
     },
 };
 
-// RTK Query's fetchBaseQuery reads global fetch; stub it so the initial
-// getProfile query resolves instead of hitting the network.
-const mockFetchOk = () =>
-    jest.fn((_input: unknown, init?: RequestInit) => {
-        const body = init?.method === 'PUT' && init.body ? init.body : JSON.stringify(profile);
-        return Promise.resolve(
-            new Response(body, {
-                status: 200,
-                headers: { 'content-type': 'application/json' },
-            })
-        );
-    }) as jest.Mock;
-
 describe('features/EditableProfileCard', () => {
     beforeEach(() => {
-        global.fetch = mockFetchOk();
+        // RTK Query's axiosBaseQuery calls $api.request(); stub it so the
+        // initial getProfile query resolves instead of hitting the network.
+        jest.spyOn($api, 'request').mockImplementation(
+            async (config: AxiosRequestConfig) => ({
+                data: config.method === 'PUT' && config.data ? config.data : profile,
+                status: 200,
+                statusText: 'OK',
+                headers: {},
+                config: config as never,
+            })
+        );
     });
 
     test('Readonly should switch', async () => {
@@ -125,8 +124,8 @@ describe('features/EditableProfileCard', () => {
             screen.getByTestId('EditableProfileCardHeader.SaveButton')
         );
 
-        const putCall = (global.fetch as jest.Mock).mock.calls.find(
-            ([request]) => (request as Request).method === 'PUT'
+        const putCall = ($api.request as jest.Mock).mock.calls.find(
+            ([config]: [AxiosRequestConfig]) => config.method === 'PUT'
         );
         expect(putCall).toBeDefined();
     });
