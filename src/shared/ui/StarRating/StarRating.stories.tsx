@@ -14,3 +14,13 @@ const Template: StoryFn<typeof StarRating> = (args) => <StarRating {...args} />;
 
 export const Normal = Template.bind({});
 Normal.args = {};
+
+export const Selected = Template.bind({});
+Selected.args = {
+    selectedStars: 3,
+};
+
+export const Large = Template.bind({});
+Large.args = {
+    size: 50,
+};

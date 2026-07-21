@@ -12,4 +12,19 @@ export default {
 const Template: StoryFn<typeof RatingCard> = (args) => <RatingCard {...args} />;
 
 export const Normal = Template.bind({});
-Normal.args = {};
+Normal.args = {
+    title: 'Оцените статью',
+};
+
+export const WithFeedback = Template.bind({});
+WithFeedback.args = {
+    title: 'Оцените статью',
+    hasFeedback: true,
+    feedbackTitle: 'Оставьте отзыв о статье',
+};
+
+export const Rated = Template.bind({});
+Rated.args = {
+    title: 'Оцените статью',
+    rate: 4,
+};

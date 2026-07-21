@@ -17,6 +17,10 @@
   "notification": {
     "empty": "No notifications"
   },
+  "thankYou": "Thank you for your rating!",
+  "close": "Close",
+  "send": "Send",
+  "Your feedback": "Your feedback",
   "error": {
     "occured": "An unexpected error occured",
     "reload": "Reload page",

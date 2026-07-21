@@ -1,12 +1,20 @@
+.StarRating {
+    display: flex;
+}
+
 .starIcon {
+    // stroke in star.svg uses currentColor; drive it from the theme.
+    color: var(--primary-color);
     cursor: pointer;
 }
 
-.normal {
+// Compound selectors (specificity 0,2,0) beat Icon's own `.Icon { fill }`
+// (0,1,0) regardless of stylesheet order, so the fill state is deterministic.
+.starIcon.normal {
     fill: none;
 }
 
-.hovered {
+.starIcon.hovered {
     fill: var(--primary-color);
 }
 
