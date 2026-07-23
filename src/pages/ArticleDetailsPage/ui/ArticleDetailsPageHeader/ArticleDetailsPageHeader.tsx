@@ -2,7 +2,7 @@ import { classNames } from '@/shared/lib/classNames/classNames';
 import { useTranslation } from 'react-i18next';
 import { memo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { RoutePath } from '@/shared/const/router';
+import { getRouteArticleEdit, getRouteArticles } from '@/shared/const/router';
 import { Button, ButtonTheme } from '@/shared/ui/Button/Button';
 import { useSelector } from 'react-redux';
 import { getArticleDetailsData } from '@/entities/Article';
@@ -22,11 +22,12 @@ export const ArticleDetailsPageHeader = memo(
         const article = useSelector(getArticleDetailsData);
 
         const onBackToList = useCallback(() => {
-            navigate(RoutePath.articles);
+            navigate(getRouteArticles());
         }, [navigate]);
 
         const onEditArticle = useCallback(() => {
-            navigate(`${RoutePath.article_details}${article?.id}/edit`);
+            if (!article?.id) return;
+            navigate(getRouteArticleEdit(article.id));
         }, [article?.id, navigate]);
 
         return (

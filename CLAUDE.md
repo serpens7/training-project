@@ -126,8 +126,12 @@ Current slices:
 - **Styling**: CSS Modules `*.module.scss` + `classNames(cls.Root, mods, [extra])`
   helper. Theme vars under `.app_light_theme` / `.app_dark_theme` (on `<body>` via
   `useTheme`). Theme enum lives in `shared/const/theme`, `useTheme` in `shared/lib/hooks`.
-- **Routing consts**: `RoutePath`/`AppRoutes` in `shared/const/router`; the route→page
-  map (`routeConfig`) in `app/providers/router/routeConfig`.
+- **Routing**: `shared/const/router` exports `AppRoutes` (enum, used as `routeConfig`
+  keys / role-gating) and `getRoute*()` builder functions (`getRouteArticleDetails(id)`,
+  `getRouteProfile(id)`, etc.) — no `RoutePath` string-concat record. The same builders
+  produce both real links (`getRouteProfile(user.id)`) and route patterns
+  (`getRouteProfile(':id')` in `routeConfig`). The route→page map (`routeConfig`) is in
+  `app/providers/router/routeConfig`.
 - **i18n**: all user-facing text via `t()`. `i18next/no-literal-string` is OFF for
   `*.test.*` and `*.stories.*`.
 - **Stories**: SB8, CSF2 template pattern; types `Meta` / `StoryFn` from

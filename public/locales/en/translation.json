@@ -17,10 +17,12 @@
   "notification": {
     "empty": "No notifications"
   },
-  "thankYou": "Thank you for your rating!",
-  "close": "Close",
-  "send": "Send",
-  "Your feedback": "Your feedback",
+  "rating": {
+    "thankYou": "Thank you for your rating!",
+    "close": "Close",
+    "send": "Send",
+    "feedbackPlaceholder": "Your feedback"
+  },
   "error": {
     "occured": "An unexpected error occured",
     "reload": "Reload page",
@@ -86,7 +88,9 @@
     "readMore": "Read more...",
     "newArticleCreation": "New article creation",
     "editWithId": "Edit with ID =",
-    "createArticle": "Create article"
+    "createArticle": "Create article",
+    "valueTheArticle": "Rate the article",
+    "leaveYourFeedbackAboutTheArticle": "Leave your feedback about the article"
   },
   "button": {
     "cancel": "Cancel",

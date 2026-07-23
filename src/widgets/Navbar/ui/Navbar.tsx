@@ -7,7 +7,7 @@ import { LoginModal } from '@/features/AuthByUserName';
 import { getUserAuthData, isUserAdmin, userActions } from '@/entities/User';
 import { useDispatch, useSelector } from 'react-redux';
 import { Text, TextTheme } from '@/shared/ui/Text/Text';
-import { RoutePath } from '@/shared/const/router';
+import { getRouteArticleCreate, getRouteMain, getRouteProfile } from '@/shared/const/router';
 import { AppLink, AppLinkTheme } from '@/shared/ui/AppLink/AppLink';
 import { Avatar } from '@/shared/ui/Avatar/Avatar';
 import { Dropdown } from '@/shared/ui/Dropdown';
@@ -39,7 +39,7 @@ export const Navbar = memo(({ className = '' }: NavbarProps) => {
 
     return (
         <header className={classNames(cls.Navbar, {}, [className])}>
-            <AppLink to={RoutePath.main} className={cls.appName}>
+            <AppLink to={getRouteMain()} className={cls.appName}>
                 <Text title={t('IT-NEWS')} theme={TextTheme.INVERTED} />
             </AppLink>
 
@@ -47,7 +47,7 @@ export const Navbar = memo(({ className = '' }: NavbarProps) => {
                 <>
                     {isAdmin && (
                         <AppLink
-                            to={RoutePath.article_create}
+                            to={getRouteArticleCreate()}
                             theme={AppLinkTheme.SECONDARY}
                             className={cls.createBtn}
                         >
@@ -70,7 +70,7 @@ export const Navbar = memo(({ className = '' }: NavbarProps) => {
                             items={[
                                 {
                                     content: t('Профиль'),
-                                    href: RoutePath.profile + authData.id,
+                                    href: getRouteProfile(authData.id),
                                 },
                                 {
                                     content: t('navbar.exit'),
