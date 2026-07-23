@@ -1,0 +1,19 @@
+.NotificationButton {
+    display: inline-flex;
+}
+
+.icon {
+    fill: var(--inverted-primary-color);
+}
+
+.mobileTrigger {
+    padding: 0;
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.list {
+    padding: 0;
+}

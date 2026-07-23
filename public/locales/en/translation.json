@@ -11,6 +11,18 @@
   "notFound": {
     "title": "Page not found"
   },
+  "forbidden": {
+    "title": "Access denied"
+  },
+  "notification": {
+    "empty": "No notifications"
+  },
+  "rating": {
+    "thankYou": "Thank you for your rating!",
+    "close": "Close",
+    "send": "Send",
+    "feedbackPlaceholder": "Your feedback"
+  },
   "error": {
     "occured": "An unexpected error occured",
     "reload": "Reload page",
@@ -76,7 +88,9 @@
     "readMore": "Read more...",
     "newArticleCreation": "New article creation",
     "editWithId": "Edit with ID =",
-    "createArticle": "Create article"
+    "createArticle": "Create article",
+    "valueTheArticle": "Rate the article",
+    "leaveYourFeedbackAboutTheArticle": "Leave your feedback about the article"
   },
   "button": {
     "cancel": "Cancel",

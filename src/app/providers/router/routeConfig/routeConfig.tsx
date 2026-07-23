@@ -1,49 +1,69 @@
 import { AboutPage } from '@/pages/AboutPage';
 import { MainPage } from '@/pages/MainPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
+import { ForbiddenPage } from '@/pages/ForbiddenPage';
 import { ProfilePage } from '@/pages/ProfilePage';
 import { ArticlesPage } from '@/pages/ArticlesPage';
 import { ArticleDetailsPage } from '@/pages/ArticleDetailsPage';
 import { ArticleEditPage } from '@/pages/ArticleEditPage';
-import { AppRoutes, AppRouteProps, RoutePath } from '@/shared/const/router';
+import {
+    AppRoutes,
+    AppRouteProps,
+    getRouteAbout,
+    getRouteArticleCreate,
+    getRouteArticleDetails,
+    getRouteArticleEdit,
+    getRouteArticles,
+    getRouteForbidden,
+    getRouteMain,
+    getRouteNotFound,
+    getRouteProfile,
+} from '@/shared/const/router';
+import { UserRole } from '@/entities/User';
 
 export const routeConfig: Record<AppRoutes, AppRouteProps> = {
     [AppRoutes.MAIN]: {
-        path: RoutePath.main,
+        path: getRouteMain(),
         element: <MainPage />,
     },
     [AppRoutes.ABOUT]: {
-        path: RoutePath.about,
+        path: getRouteAbout(),
         element: <AboutPage />,
     },
     [AppRoutes.PROFILE]: {
-        path: `${RoutePath.profile}:id`,
+        path: getRouteProfile(':id'),
         element: <ProfilePage />,
         authOnly: true,
     },
 
     [AppRoutes.NOT_FOUND]: {
-        path: RoutePath.not_found,
+        path: getRouteNotFound(),
         element: <NotFoundPage />,
     },
+    [AppRoutes.FORBIDDEN]: {
+        path: getRouteForbidden(),
+        element: <ForbiddenPage />,
+    },
     [AppRoutes.ARTICLES]: {
-        path: RoutePath.articles,
+        path: getRouteArticles(),
         element: <ArticlesPage />,
         authOnly: true,
     },
     [AppRoutes.ARTICLE_DETAILS]: {
-        path: `${RoutePath.article_details}:id`,
+        path: getRouteArticleDetails(':id'),
         element: <ArticleDetailsPage />,
         authOnly: true,
     },
     [AppRoutes.ARTICLE_CREATE]: {
-        path: RoutePath.article_create,
+        path: getRouteArticleCreate(),
         element: <ArticleEditPage />,
         authOnly: true,
+        roles: [UserRole.ADMIN],
     },
     [AppRoutes.ARTICLE_EDIT]: {
-        path: `${RoutePath.article_edit}`,
+        path: getRouteArticleEdit(':id'),
         element: <ArticleEditPage />,
         authOnly: true,
+        roles: [UserRole.ADMIN],
     },
 };

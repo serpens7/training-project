@@ -3,6 +3,7 @@ import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
+import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import { BuildOptions } from './types/config';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
@@ -28,6 +29,12 @@ export function buildPlugins({ paths, isDev, apiUrl, project }: BuildOptions): w
             openAnalyzer: false,
         }),
     ];
+
+    if (isDev) {
+        // Paired with swc-loader's jsc.transform.react.refresh (buildLoaders.ts):
+        // edited components keep their state instead of remounting on save.
+        plugins.push(new ReactRefreshWebpackPlugin({ overlay: false }));
+    }
 
     if (!isDev) {
         // Runtime i18next loads locales from /locales/{{lng}}/{{ns}}.json, so the

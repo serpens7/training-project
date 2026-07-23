@@ -28,23 +28,41 @@ export function buildLoaders({ isDev }: BuildOptions): webpack.RuleSetRule[] {
 
     const cssLoader = buildCssLoader(isDev);
 
-    const typescriptLoader = {
+    // SWC (Rust) transpiles TS/JSX far faster than ts-loader. Type-checking is
+    // NOT done here — it lives in the separate `npm run type:check` (tsc --noEmit),
+    // exactly as ts-loader's `transpileOnly: true` behaved before.
+    const codeLoader = {
         test: /\.tsx?$/,
-        use: [
-            {
-                loader: 'ts-loader',
-                options: {
-                    transpileOnly: true, // 💥 КЛЮЧЕВОЙ ФИКС
+        exclude: /node_modules/,
+        use: {
+            loader: 'swc-loader',
+            options: {
+                jsc: {
+                    parser: {
+                        syntax: 'typescript',
+                        tsx: true,
+                    },
+                    // Matches tsconfig target: es6
+                    target: 'es2015',
+                    transform: {
+                        react: {
+                            // Matches tsconfig jsx: react-jsx
+                            runtime: 'automatic',
+                            development: isDev,
+                            // Paired with ReactRefreshWebpackPlugin (buildPlugins.ts):
+                            // component state survives edits instead of remounting.
+                            refresh: isDev,
+                        },
+                    },
                 },
             },
-        ],
-        exclude: /node_modules/,
+        },
     };
     return [
         jsResolveLoader,
         svgLoader,
         fileLoader,
-        typescriptLoader,
+        codeLoader,
         cssLoader
     ];
 }

@@ -1,5 +1,4 @@
 import { classNames } from '@/shared/lib/classNames/classNames';
-import { useTranslation } from 'react-i18next';
 import { memo } from 'react';
 import { ArticleDetails } from '@/entities/Article';
 import { useParams } from 'react-router-dom';
@@ -9,6 +8,7 @@ import { ArticleDetailsPageHeader } from '../ArticleDetailsPageHeader/ArticleDet
 import { VStack } from '@/shared/ui/Stack';
 import { ArticleRecommendationsList } from '@/features/articleRecommendationsList';
 import { ArticleComments } from '@/features/ArticleComments';
+import ArticleRating from '@/features/articleRating/ui/ArticleRating/ArticleRating';
 
 interface ArticleDetailsPageProps {
     className?: string;
@@ -16,17 +16,10 @@ interface ArticleDetailsPageProps {
 
 const ArticleDetailsPage = (props: ArticleDetailsPageProps) => {
     const { className = '' } = props;
-    const { t } = useTranslation();
     const { id } = useParams<{ id: string }>();
 
     if (!id) {
-        return (
-            <Page
-                className={classNames(cls.ArticleDetailsPage, {}, [className])}
-            >
-                {t('error.articleNotFound')}
-            </Page>
-        );
+        return null;
     }
 
     return (
@@ -34,6 +27,7 @@ const ArticleDetailsPage = (props: ArticleDetailsPageProps) => {
             <VStack gap='16' max>
                 <ArticleDetailsPageHeader />
                 <ArticleDetails id={id} />
+                <ArticleRating articleId={id} />
                 <ArticleRecommendationsList />
                 <ArticleComments id={id} />
             </VStack>

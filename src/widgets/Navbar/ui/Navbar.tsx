@@ -4,14 +4,15 @@ import { classNames } from '@/shared/lib/classNames/classNames';
 import { memo, useCallback, useState } from 'react';
 import { Button, ButtonTheme } from '@/shared/ui/Button/Button';
 import { LoginModal } from '@/features/AuthByUserName';
-import { getUserAuthData, userActions } from '@/entities/User';
+import { getUserAuthData, isUserAdmin, userActions } from '@/entities/User';
 import { useDispatch, useSelector } from 'react-redux';
 import { Text, TextTheme } from '@/shared/ui/Text/Text';
-import { RoutePath } from '@/shared/const/router';
+import { getRouteArticleCreate, getRouteMain, getRouteProfile } from '@/shared/const/router';
 import { AppLink, AppLinkTheme } from '@/shared/ui/AppLink/AppLink';
 import { Avatar } from '@/shared/ui/Avatar/Avatar';
 import { Dropdown } from '@/shared/ui/Dropdown';
 import { HStack } from '@/shared/ui/Stack';
+import { NotificationButton } from '@/features/NotificationButton';
 
 interface NavbarProps {
     className?: string;
@@ -21,6 +22,7 @@ export const Navbar = memo(({ className = '' }: NavbarProps) => {
     const { t } = useTranslation();
     const [isAuthModal, setIsAuthModal] = useState(false);
     const authData = useSelector(getUserAuthData);
+    const isAdmin = useSelector(isUserAdmin);
     const dispatch = useDispatch();
 
     const onCloseModal = useCallback(() => {
@@ -37,20 +39,23 @@ export const Navbar = memo(({ className = '' }: NavbarProps) => {
 
     return (
         <header className={classNames(cls.Navbar, {}, [className])}>
-            <AppLink to={RoutePath.main} className={cls.appName}>
+            <AppLink to={getRouteMain()} className={cls.appName}>
                 <Text title={t('IT-NEWS')} theme={TextTheme.INVERTED} />
             </AppLink>
 
             {authData ? (
                 <>
-                    <AppLink
-                        to={RoutePath.article_create}
-                        theme={AppLinkTheme.SECONDARY}
-                        className={cls.createBtn}
-                    >
-                        {t('article.createArticle')}
-                    </AppLink>
+                    {isAdmin && (
+                        <AppLink
+                            to={getRouteArticleCreate()}
+                            theme={AppLinkTheme.SECONDARY}
+                            className={cls.createBtn}
+                        >
+                            {t('article.createArticle')}
+                        </AppLink>
+                    )}
                     <div className={cls.rightSide}>
+                        <NotificationButton />
                         <Dropdown
                             direction='bottom'
                             trigger={
@@ -65,7 +70,7 @@ export const Navbar = memo(({ className = '' }: NavbarProps) => {
                             items={[
                                 {
                                     content: t('Профиль'),
-                                    href: RoutePath.profile + authData.id,
+                                    href: getRouteProfile(authData.id),
                                 },
                                 {
                                     content: t('navbar.exit'),

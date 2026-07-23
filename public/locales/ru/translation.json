@@ -11,6 +11,18 @@
   "notFound": {
     "title": "Страница не найдена"
   },
+  "forbidden": {
+    "title": "Доступ запрещён"
+  },
+  "notification": {
+    "empty": "Нет уведомлений"
+  },
+  "rating": {
+    "thankYou": "Спасибо за оценку!",
+    "close": "Закрыть",
+    "send": "Отправить",
+    "feedbackPlaceholder": "Ваш отзыв"
+  },
   "error": {
     "occured": "Произошла непредвиденная ошибка",
     "reload": "Обновить страницу",
@@ -75,7 +87,9 @@
     "readMore": "Читать далее...",
     "newArticleCreation": "Создание новой статьи",
     "editWithId": "Редактирование статьи с ID = ",
-    "createArticle": "Создать статью"
+    "createArticle": "Создать статью",
+    "valueTheArticle": "Оцените статью",
+    "leaveYourFeedbackAboutTheArticle": "Оставьте свой отзыв о статье"
   },
   "article-details": {},
   "comments": {

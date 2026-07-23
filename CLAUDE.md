@@ -18,12 +18,13 @@ Absolute imports use the `@/` alias → `src/` (webpack + tsconfig `paths`).
 | Router | react-router-dom **6.2** |
 | i18n | react-i18next **15** / i18next **23** |
 | TS | `typescript@^5.4` (resolves to 5.9); `moduleResolution: "bundler"` |
-| Build | webpack **5** (config in `config/build`, entry-agnostic) |
+| Build | webpack **5** (config in `config/build`); **swc-loader** transpiles (not ts-loader), dev filesystem cache + React Fast Refresh, prod `splitChunks` vendor chunk |
 | Stories | Storybook **8.6** (webpack5 + SWC compiler) |
 | Tests | jest **29** + `@swc/jest` + testing-library **14** |
-| HTTP | axios (`shared/api/api.ts`, `$api`) for thunks; `fetchBaseQuery` for RTK Query |
-| Virtualization | react-virtuoso (articles list) |
-| UI primitives | **@headlessui/react v2** (Dropdown, ListBox) |
+| HTTP | **axios `$api`** (`shared/api/api.ts`) for both thunks and RTK Query — `rtkApi.ts` uses `axiosBaseQuery` (`shared/api/axiosBaseQuery.ts`), not `fetchBaseQuery`, so the auth interceptor lives in one place |
+| Virtualization | react-virtuoso (articles list; already inside a lazy page chunk) |
+| Responsive | **react-device-detect** (`BrowserView`/`MobileView`) — e.g. Popover vs Drawer |
+| UI primitives | **@headlessui/react v2** (Dropdown, ListBox, Popover) |
 | FSD linter | **steiger** (`lint:fsd`) |
 
 ## Commands (npm)
@@ -51,11 +52,11 @@ app → pages → widgets → features → entities → shared
 ```
 
 Current slices:
-- **entities**: Article, Comment, Counter, Country, Currency, Profile, User
-- **features**: ArticleComments, AuthByUserName, articleRecommendationsList, LangSwitcher, ThemeSwitcher
+- **entities**: Article, Comment, Counter, Country, Currency, Notification, Profile, User
+- **features**: ArticleComments, AuthByUserName, articleRecommendationsList, editableProfileCard, LangSwitcher, NotificationButton, ThemeSwitcher
 - **widgets**: Navbar, Page, PageError, PageLoader, Sidebar
-- **pages**: About, ArticleDetails, ArticleEdit, Articles, Main, NotFound, Profile
-- **shared/ui**: AppLink, Avatar, Button, Card, Code, Dropdown, Icon, Input, ListBox, Loader, Modal, PageLoader, Portal, Select, Skeleton, Stack (HStack/VStack), Tabs, Text
+- **pages**: About, ArticleDetails, ArticleEdit, Articles, Forbidden, Main, NotFound, Profile
+- **shared/ui**: AppLink, Avatar, Button, Card, Code, Drawer, Dropdown, Icon, Input, ListBox, Loader, Modal, PageLoader, Popover, Portal, Select, Skeleton, Stack (HStack/VStack), Tabs, Text
 - **app/providers**: ErrorBoundary, StoreProvider, ThemeProvider, router
 
 ### Rules the codebase follows (enforced by steiger)
@@ -85,25 +86,52 @@ Current slices:
 
 ## RTK Query (server-state — preferred direction)
 
-- Base API: `shared/api/rtkApi.ts` (`createApi` + `fetchBaseQuery`, `tagTypes: ['Comments']`).
+- Base API: `shared/api/rtkApi.ts` (`createApi` + `axiosBaseQuery()`, `tagTypes: ['Comments', 'Profile']`).
   Wired into the store (`api` reducer + middleware) and `StateSchema[rtkApi.reducerPath]`.
-- Each feature **injects its own endpoints** (`injectEndpoints`) in its `api/` segment,
-  e.g. `features/ArticleComments/api/articleCommentsApi.ts` (getComments query +
-  addComment mutation with tag invalidation → auto-refetch),
-  `features/articleRecommendationsList/api/articleRecommendationsApi.ts`.
+  `axiosBaseQuery` (`shared/api/axiosBaseQuery.ts`) delegates to `$api.request(...)` (call
+  `.request` explicitly, not `$api(...)` — the callable instance is a separate bound
+  function from `.request`, so tests spying on `$api.request` wouldn't see calls made
+  through the bare callable).
+- Endpoints are injected (`injectEndpoints`) in an `api/` segment — usually in the feature
+  (`features/ArticleComments/api/articleCommentsApi.ts`,
+  `features/editableProfileCard/api/profileApi.ts`), or in the entity when the query just
+  fetches that entity's own data (`entities/Notification/api/notificationApi.ts`).
+  Hooks are re-exported under renamed constants; `tagTypes` stay centralized in `rtkApi`.
 - **Two data-fetching paradigms coexist**: legacy `createAsyncThunk`+slice+entityAdapter
-  (Profile, Articles, Auth) and RTK Query (Comments, Recommendations). Direction of
-  travel = migrate server-state to RTK Query. When adding new fetching, prefer RTK Query.
-- Caveat: RTK Query uses `fetch`, thunks use axios `$api` — auth header logic is
-  duplicated in both. Fine for now; could unify with an `axiosBaseQuery`.
+  (**Articles, Auth**) and RTK Query (Comments, Recommendations, **Profile**, Notifications).
+  Direction of travel = migrate server-state to RTK Query. **Profile is already migrated**:
+  `editableProfileCard` fetches/updates via `profileApi` (RTK Query); its slice now holds
+  only client-side edit state (readonly, form draft, validate errors). When adding new
+  fetching, prefer RTK Query.
+- Auth header is set once, by `$api`'s request interceptor (`shared/api/api.ts`) — both
+  thunks and RTK Query endpoints go through it. No separate `prepareHeaders` to keep in sync.
+
+## Access control (roles)
+
+- **`UserRole`** enum lives in `shared/const/rbac.ts` and is re-exported from
+  `entities/User` (kept in `shared` so `shared/const/router` can reference it without a
+  forbidden `shared → entities` import). `User.roles?: UserRole[]` comes straight from
+  `/login` (json-server `users` carry a `roles` array).
+- **Route gating**: `AppRouteProps` has an optional `roles?: UserRole[]`; `RequireAuth`
+  (`app/providers/router/ui/RequireAuth`) checks auth **and** role intersection — a
+  role mismatch redirects to **`ForbiddenPage`** (`/forbidden`), missing auth redirects to
+  main. `AppRouter` passes `route.roles` through.
+- **What's gated**: article create/edit routes require `UserRole.ADMIN`. The Navbar hides
+  the "create article" link via `isUserAdmin`, and `getCanEditArticle`
+  (`pages/ArticleDetailsPage/model/selectors/article.ts`) checks the admin role.
+- Role selectors: `getUserRoles`, `isUserAdmin`, `isUserManager` (`entities/User`).
 
 ## Conventions
 
 - **Styling**: CSS Modules `*.module.scss` + `classNames(cls.Root, mods, [extra])`
   helper. Theme vars under `.app_light_theme` / `.app_dark_theme` (on `<body>` via
   `useTheme`). Theme enum lives in `shared/const/theme`, `useTheme` in `shared/lib/hooks`.
-- **Routing consts**: `RoutePath`/`AppRoutes` in `shared/const/router`; the route→page
-  map (`routeConfig`) in `app/providers/router/routeConfig`.
+- **Routing**: `shared/const/router` exports `AppRoutes` (enum, used as `routeConfig`
+  keys / role-gating) and `getRoute*()` builder functions (`getRouteArticleDetails(id)`,
+  `getRouteProfile(id)`, etc.) — no `RoutePath` string-concat record. The same builders
+  produce both real links (`getRouteProfile(user.id)`) and route patterns
+  (`getRouteProfile(':id')` in `routeConfig`). The route→page map (`routeConfig`) is in
+  `app/providers/router/routeConfig`.
 - **i18n**: all user-facing text via `t()`. `i18next/no-literal-string` is OFF for
   `*.test.*` and `*.stories.*`.
 - **Stories**: SB8, CSF2 template pattern; types `Meta` / `StoryFn` from
@@ -115,9 +143,25 @@ Current slices:
   22 could fail `npm ci`. Keep node 24 to match.
 - **`moduleResolution: "bundler"`** is required — react-i18next 15 ships ESM (`.d.mts`)
   types that `node10` can't resolve; the IDE (TS server) will flag them otherwise.
-- **`lint:scss` currently fails on a PRE-EXISTING issue** in
-  `src/app/styles/variables/global.scss` (`custom-property-empty-line-before`),
-  unrelated to feature work. Don't chase it as if you broke it.
+- **RTK Query component tests mock `$api.request`**, not `fetch` — `rtkApi` runs on
+  `axiosBaseQuery`, which calls `$api.request(...)`. `jest.spyOn($api, 'request')
+  .mockImplementation(...)` and resolve an axios-shaped response (`{ data, status,
+  statusText, headers, config }`); see `EditableProfileCard.test.tsx` /
+  `NotificationButton.test.tsx`. Because `axiosBaseQuery` fires the query async
+  (on mount / on interaction), assertions on call count often need `waitFor(...)`.
+- **`componentRender`** (`shared/lib/tests`) accepts `asyncReducers` — pass it when the
+  component under test registers a lazy slice via `DynamicModuleLoader`.
+- **`Modal` and `Drawer` share `useModal`** (`shared/lib/hooks/useModal`): open/close
+  state, animation timer, Escape handling. `Drawer` adds a pointer-based swipe-to-dismiss
+  on its grab handle (no animation libs — plain CSS `transform` + Pointer Events).
+- **jsdom has no `PointerEvent`.** `fireEvent.pointer*` silently falls back to a plain
+  `Event` and drops `clientY`/`clientX`. Tests exercising pointer drag (see
+  `Drawer.test.tsx`) alias `window.PointerEvent = MouseEvent` and stub
+  `Element.prototype.setPointerCapture` before rendering.
+- **`Popover` exposes `onOpenChange`** via an internal render-prop watcher (headlessui's
+  `open` state is only available inside `<HeadlessPopover>`'s children-as-function scope).
+  `NotificationButton` uses it to only set `pollingInterval` while the panel is actually
+  open/visible (Popover or Drawer), instead of polling forever once mounted.
 - **Storybook theme portals**: `@headlessui` `anchor` menus render in a `<body>` portal;
   in Storybook `ThemeDecorator` puts the theme class on a `<div>`, so dropdown menus
   render un-themed in SB (fine in the real app, where the class is on `<body>`).
@@ -134,6 +178,10 @@ Current slices:
 - `type:check` is the source of truth for type errors and matches the IDE (bundler).
 - Do NOT commit/push unless asked. If on `main`, branch first. Current branch:
   **`feat/headlessui`** (working branch for this stream of work).
+- Do NOT manually verify in the browser (Chrome MCP: navigate, screenshot, click through
+  flows, check console/network) by default. Running the CI chain (type:check, lint, unit,
+  build) is enough to call a change done. Only do live browser verification when the user
+  explicitly asks for it.
 
 ## Reference architecture example (Comments)
 
